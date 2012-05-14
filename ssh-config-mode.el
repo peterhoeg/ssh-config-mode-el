@@ -2,14 +2,15 @@
 ;;
 ;; ~harley/share/emacs/pkg/ssh/ssh-config-mode.el ---
 ;;
-;; $Id: ssh-config-mode.el,v 1.13 2011/11/26 22:39:23 harley Exp $
+;; $Id: ssh-config-mode.el,v 1.14 2012/05/14 05:29:26 harley Exp $
 ;;
 
 ;; Author:    Harley Gorrell <harley@panix.com>
 ;; URL:       http://www.mahalito.net/~harley/elisp/ssh-config-mode.el
+;; Github:    https://raw.github.com/jhgorrell/ssh-config-mode-el/master/ssh-config-mode.el
 ;; License:   GPL v2
 ;; Keywords:  ssh, config, emacs
-;; Version:   $Revision: 1.13 $
+;; Version:   $Revision: 1.14 $
 
 ;;; Commentary:
 ;; * Fontifys the ssh config keywords.
