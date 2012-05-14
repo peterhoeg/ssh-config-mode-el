@@ -1,16 +1,14 @@
 # -*- mode: org -*- 
 #+AUTHOR:  harley
 #+EMAIL:   harley@panix.com
-#+TEXT:    $Id: README.org,v 1.1 2012/05/14 05:29:43 harley Exp $
+#+TEXT:    $Id: README.org,v 1.2 2012/05/14 05:31:28 harley Exp $
 
 * ssh-config-mode.el
   A mode to edit ~/.ssh/config files.
 
-** Fontifys the ssh config keywords.
-
-** keys for skipping from host section to host section.
-
-** Add the following to your startup file.
+- Fontifys the ssh config keywords.
+- Keys for skipping from host section to host section.
+- Add the following to your startup file.
 
 :  (autoload 'ssh-config-mode "ssh-config-mode" t)
 :  (add-to-list 'auto-mode-alist '(".ssh/config\\'"  . ssh-config-mode))
