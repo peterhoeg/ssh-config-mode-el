@@ -192,6 +192,32 @@
   (run-hooks 'ssh-known-hosts-mode-hook)
   nil)
 
+;;;;;
+
+(define-generic-mode ssh-authorized-keys-mode
+  '(?\#)
+  nil
+  (eval-when-compile
+    (list
+     (list
+      (concat
+       ;; ignore options
+       ;; double quoted string will be fontified by generic mode.
+       ;; key type
+       "\\(\\(?:ecdsa\\|ssh\\)-[^[:space:]]+\\)\\s-+"
+       ;; base64
+       "\\([^[:space:]\n]+\\)"
+       ;; comment in public key
+       "\\(?: \\(.*\\)\\)?"
+       "$")
+      '(1 font-lock-function-name-face)
+      '(2 font-lock-variable-name-face)
+      '(3 font-lock-comment-face nil t)
+      )))
+  ;; Not define `auto-mode-alist' obey the other mode in this elisp.
+  nil
+  nil)
+
 ;; done loading
 (run-hooks 'ssh-config-mode-load-hook)
 (provide 'ssh-config-mode)
