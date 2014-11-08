@@ -212,8 +212,9 @@
        ;; comment in public key
        "\\(?: \\(.*\\)\\)?"
        "$")
-      '(1 font-lock-function-name-face)
-      '(2 font-lock-variable-name-face)
+      '(1 font-lock-keyword-face)
+      ;; not fontify like known_hosts
+      ;; '(2 font-lock-variable-name-face)
       '(3 font-lock-comment-face nil t)
       )))
   ;; Not define `auto-mode-alist' obey the other mode in this elisp.
