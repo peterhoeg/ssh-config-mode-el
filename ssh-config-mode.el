@@ -156,9 +156,22 @@
 
 (defvar ssh-known-hosts-font-lock-keywords
   ;; how to put eval-when-compile without recursive require?
-  '(("^\\([-a-z0-9.,]+\\)\\s-+\\(ssh-\\sw*\\)"
-     (1 font-lock-function-name-face)
-     (2 font-lock-keyword-face)))
+  `((,(concat
+       "^"
+       ;; marker (optional)
+       "\\(?:\\(@[^[:space:]]+\\)\\s-+\\)?"
+       ;; hostnames
+       "\\([-*a-z0-9.,]+\\||[^[:space:]]+\\)\\s-+"
+       ;; public key (fontify just key type)
+       "\\(\\(?:ssh\\|ecdsa\\)[^[:space:]]*\\|\\)"
+       )
+     (1 font-lock-variable-name-face nil t)
+     (2 font-lock-function-name-face)
+     (3 font-lock-keyword-face)
+     )
+    ("^[[:space:]]*\\(#.*\\)"
+     (1 font-lock-comment-face))
+    )
   "Expressions to hilight in `ssh-config-mode'.")
 ;; ssh-config-font-lock-keywords
 
