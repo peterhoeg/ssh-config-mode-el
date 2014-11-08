@@ -145,7 +145,7 @@
 
 ;;;;;
 
-(defvar ssh-config-mode-hook nil
+(defvar ssh-known-hosts-mode-hook nil
   "*Hook to setup `ssh-config-mode'.")
 
 (defvar ssh-known-hosts-mode-map
