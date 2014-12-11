@@ -17,8 +17,10 @@
 ;; * keys for skipping from host section to host section.
 ;; * Add the following to your startup file.
 ;;   (autoload 'ssh-config-mode "ssh-config-mode" t)
-;;   (add-to-list 'auto-mode-alist '(".ssh/config\\'"  . ssh-config-mode))
-;;   (add-to-list 'auto-mode-alist '("sshd?_config\\'" . ssh-config-mode))
+;;   (add-to-list 'auto-mode-alist '(".ssh/config\\'"       . ssh-config-mode))
+;;   (add-to-list 'auto-mode-alist '("sshd?_config\\'"      . ssh-config-mode))
+;;   (add-to-list 'auto-mode-alist '("known_hosts\\'"       . ssh-known-hosts-mode))
+;;   (add-to-list 'auto-mode-alist '("authorized_keys2?\\'" . ssh-authorized-keys-mode))
 ;;   (add-hook 'ssh-config-mode-hook 'turn-on-font-lock)
 
 ;;; History:
@@ -145,7 +147,7 @@
 
 ;;;;;
 
-(defvar ssh-config-mode-hook nil
+(defvar ssh-known-hosts-mode-hook nil
   "*Hook to setup `ssh-config-mode'.")
 
 (defvar ssh-known-hosts-mode-map
@@ -156,9 +158,22 @@
 
 (defvar ssh-known-hosts-font-lock-keywords
   ;; how to put eval-when-compile without recursive require?
-  '(("^\\([-a-z0-9.,]+\\)\\s-+\\(ssh-\\sw*\\)"
-     (1 font-lock-function-name-face)
-     (2 font-lock-keyword-face)))
+  `((,(concat
+       "^"
+       ;; marker (optional)
+       "\\(?:\\(@[^[:space:]]+\\)\\s-+\\)?"
+       ;; hostnames
+       "\\([-*a-z0-9.,]+\\||[^[:space:]]+\\)\\s-+"
+       ;; public key (fontify just key type)
+       "\\(\\(?:ssh\\|ecdsa\\)[^[:space:]]*\\|\\)"
+       )
+     (1 font-lock-variable-name-face nil t)
+     (2 font-lock-function-name-face)
+     (3 font-lock-keyword-face)
+     )
+    ("^[[:space:]]*\\(#.*\\)"
+     (1 font-lock-comment-face))
+    )
   "Expressions to hilight in `ssh-config-mode'.")
 ;; ssh-config-font-lock-keywords
 
@@ -177,6 +192,33 @@
   (setq font-lock-defaults '(ssh-known-hosts-font-lock-keywords))
   ;;
   (run-hooks 'ssh-known-hosts-mode-hook)
+  nil)
+
+;;;;;
+
+(define-generic-mode ssh-authorized-keys-mode
+  '(?\#)
+  nil
+  (eval-when-compile
+    (list
+     (list
+      (concat
+       ;; ignore options
+       ;; double quoted string will be fontified by generic mode.
+       ;; key type
+       "\\(\\(?:ecdsa\\|ssh\\)-[^[:space:]]+\\)\\s-+"
+       ;; base64
+       "\\([^[:space:]\n]+\\)"
+       ;; comment in public key
+       "\\(?: \\(.*\\)\\)?"
+       "$")
+      '(1 font-lock-keyword-face)
+      ;; not fontify like known_hosts
+      ;; '(2 font-lock-variable-name-face)
+      '(3 font-lock-comment-face nil t)
+      )))
+  ;; Not define `auto-mode-alist' obey the other mode in this elisp.
+  nil
   nil)
 
 ;; done loading
