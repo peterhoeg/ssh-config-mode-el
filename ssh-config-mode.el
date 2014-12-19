@@ -128,8 +128,10 @@
 (defvar ssh-config-font-lock-keywords
   ;; how to put eval-when-compile without recursive require?
   (eval-when-compile
-    `((,(regexp-opt (append ssh-config-words-ssh ssh-config-words-sshd) 'words)
-       (1 font-lock-keyword-face))))
+    `((
+       ,(regexp-opt (append ssh-config-words-ssh ssh-config-words-sshd) 'words)
+       (1 font-lock-keyword-face)
+       )))
   "Expressions to hilight in `ssh-config-mode'.")
 ;; ssh-config-font-lock-keywords
 
@@ -149,7 +151,7 @@
   (use-local-map ssh-config-mode-map)
   ;;
   (make-local-variable 'font-lock-defaults)
-  (setq font-lock-defaults '(ssh-config-font-lock-keywords))
+  (setq font-lock-defaults '(ssh-config-font-lock-keywords nil t))
   ;;
   (run-hooks 'ssh-config-mode-hook)
   nil)
