@@ -156,6 +156,13 @@
   (run-hooks 'ssh-config-mode-hook)
   nil)
 
+;;;###autoload
+(progn
+  (add-to-list 'auto-mode-alist '("/\\.ssh/config\\'" . ssh-config-mode))
+  (add-to-list 'auto-mode-alist '("/sshd?_config\\'" . ssh-config-mode))
+  (add-to-list 'auto-mode-alist '("/known_hosts\\'" . ssh-known-hosts-mode))
+  (add-to-list 'auto-mode-alist '("/authorized_keys\\'" . ssh-authorized-keys-mode)))
+
 ;;;;;
 
 (defvar ssh-known-hosts-mode-hook nil
