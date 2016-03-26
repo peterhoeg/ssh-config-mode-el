@@ -58,9 +58,9 @@ _circleci_junit: _checkdoc_batch
 	@$(call junit,"<testsuite tests='1'>\n<testcase classname='checkdoc' name='checkdoc'>")
 	@$(call junit,"<system-out>")
 	@cat checkdoc.stdout >> junit.xml.tmp
-	@$(call junit,-e "<system-out/>\n<system-err>")
+	@$(call junit,-e "</system-out>\n<system-err>")
 	@cat checkdoc.stderr >> junit.xml.tmp
-	@$(call junit,"<system-err/>\n<testcase/>\n<testsuite/>")
+	@$(call junit,"</system-err>\n</testcase>\n</testsuite>")
 	mv junit.xml.tmp junit.xml
 
 _printenv:
