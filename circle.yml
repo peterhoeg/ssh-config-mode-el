@@ -1,0 +1,10 @@
+general:
+  artifacts:
+    - checkdoc.stderr
+    - checkdoc.stdout
+    - junit.xml
+    - ssh-config-mode.elc
+test:
+  override:
+    - make _circleci_run
+

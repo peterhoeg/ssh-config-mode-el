@@ -1,0 +1,8 @@
+*.elc
+*.stderr
+*.stdout
+*.tmp
+*.xml
+*~
+\#*\#
+checkdoc-batch.el
