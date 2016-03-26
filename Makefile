@@ -37,8 +37,8 @@ NEW_TAG ?= $(shell date +%Y%m%dT%H%M)
 _update_tag:
 	echo "### Tagging as: '$(NEW_TAG)'..."
 	sed -i "" -e 's/^;; Tag: .*/;; Tag:       $(NEW_TAG)/' $(EL)
-	echo git commit -am "set tag to: '$(NEW_TAG)'"
-	echo git tag -a $(NEW_TAG) -m $(NEW_TAG)
+	git commit -am "set tag to: '$(NEW_TAG)'"
+	git tag -a $(NEW_TAG) -m $(NEW_TAG)
 
 ###
 
