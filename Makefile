@@ -24,11 +24,16 @@ _checkdoc_batch: | checkdoc-batch.el
 	emacs --batch \
 	  --load ${PWD}/checkdoc-batch.el \
 	  --funcall checkdoc-batch-commandline \
-	  ${EL}
+	  ${EL} 1> checkdoc.stdout 2> checkdoc.stderr ; \
+	cat checkdoc.stdout checkdoc.stderr
 
+###
 
-_dist_clean:
-	rm checkdoc-batch.el
+_clean:
+	-rm *.elc junit.xml junit.xml.tmp
+
+_dist_clean: _clean
+	-rm checkdoc-batch.el
 
 ###
 
@@ -45,5 +50,16 @@ _update_tag:
 _emacs_version:
 	emacs --version
 
-_circleci: _emacs_version _byte_compile _checkdoc_batch 
+junit=@echo -e ${1} >> junit.xml.tmp
 
+_circleci_junit: _checkdoc_batch
+	@echo -n "" > junit.xml.tmp
+	@$(call junit,"<testsuite tests='1'>\n<testcase classname='checkdoc' name='checkdoc'/>")
+	@$(call junit,"<system-out>")
+	@cat checkdoc.stdout >> junit.xml.tmp
+	@$(call junit,-e "<system-out/>\n<system-err>")
+	@cat checkdoc.stderr >> junit.xml.tmp
+	@$(call junit,"<system-err/>\n<testcase/>\n<testsuite/>")
+	mv junit.xml.tmp junit.xml
+
+_circleci: _clean _emacs_version _byte_compile _circleci_junit
