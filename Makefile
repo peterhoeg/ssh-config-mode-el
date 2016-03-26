@@ -54,6 +54,7 @@ junit=@echo -e ${1} >> junit.xml.tmp
 
 _circleci_junit: _checkdoc_batch
 	@echo -n "" > junit.xml.tmp
+	@$(call junit,"<?xml version='1.0' encoding='utf-8'?>")
 	@$(call junit,"<testsuite tests='1'>\n<testcase classname='checkdoc' name='checkdoc'/>")
 	@$(call junit,"<system-out>")
 	@cat checkdoc.stdout >> junit.xml.tmp
@@ -62,4 +63,7 @@ _circleci_junit: _checkdoc_batch
 	@$(call junit,"<system-err/>\n<testcase/>\n<testsuite/>")
 	mv junit.xml.tmp junit.xml
 
-_circleci: _clean _emacs_version _byte_compile _circleci_junit
+_printenv:
+	printenv | sort
+
+_circleci_run: _clean _printenv _emacs_version _byte_compile _circleci_junit
