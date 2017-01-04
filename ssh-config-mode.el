@@ -96,7 +96,7 @@
       "ServerAliveInterval" "ServerAliveCountMax"
       "StreamLocalBindMask" "StreamLocalBindUnlink"
       "StrictHostKeyChecking" "TCPKeepAlive" "Tunnel" "TunnelDevice"
-      "UpdateHostKeys"
+      "UpdateHostKeys" "UseKeychain"
       "UsePrivilegedPort" "User" "UserKnownHostsFile"
       "VerifyHostKeyDNS" "VisualHostKey" "XAuthLocation"
 
