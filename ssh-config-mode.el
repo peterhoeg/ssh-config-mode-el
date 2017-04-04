@@ -203,6 +203,7 @@
   "Expressions to hilight in `ssh-config-mode'.")
 ;; ssh-config-font-lock-keywords
 
+;;;###autoload
 (defun ssh-known-hosts-mode ()
   "Major mode for fontifiying ssh known_hosts files.
 \\{ssh-known-hosts-mode}"
@@ -222,6 +223,7 @@
 
 ;;;;;
 
+;;;###autoload (autoload 'ssh-authorized-keys-mode "ssh-config-mode" nil t)
 (define-generic-mode ssh-authorized-keys-mode
   '(?\#)
   nil
