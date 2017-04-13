@@ -12,6 +12,7 @@ EL:=ssh-config-mode.el
 _default: _byte_compile
 
 _byte_compile:
+	-rm *.elc
 	emacs --batch \
 	  --funcall batch-byte-compile \
 	  ${EL}
@@ -26,6 +27,11 @@ _checkdoc_batch: | checkdoc-batch.el
 	  --funcall checkdoc-batch-commandline \
 	  ${EL} 1> checkdoc.stdout 2> checkdoc.stderr ; \
 	cat checkdoc.stdout checkdoc.stderr
+
+###
+
+_update_keywords:
+	cd get-keywords && make _update_keywords
 
 ###
 

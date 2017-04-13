@@ -28,18 +28,53 @@
 ;; * This keeps checkdoc happy.
 
 ;;; Code:
-;; (load "ssh-config-mode.el")
+;; (eval-buffer)
+;; (progn (delete-trailing-whitespace) (indent-region 0 (point-max)))
+;; (byte-compile-file "ssh-config-mode.el" t)
+;; (load "ssh-config-mode")
 
-;; 
-(defvar ssh-config-load-file-dir 
-  (if load-file-name
-    (file-name-directory load-file-name)
-    default-directory)
-  "Where this file was loaded from.")
+;; We use eval-and-compile so we can use them at compile
+;; time and call regexp-opt during compliation.
+
+(eval-and-compile
+  (defvar ssh-config-load-file-dir
+    (if load-file-name
+      (file-name-directory load-file-name)
+      default-directory)
+    "Where this file was loaded from."))
+
+(eval-and-compile
+  (defun ssh-config-read-keywords (&optional file-path)
+    (message "ssh-config-read-keywords")
+    (let ((file-path
+           (or file-path
+               (concat
+                (file-name-as-directory ssh-config-load-file-dir)
+                "ssh-config-keywords.txt"))))
+      (with-temp-buffer
+        (insert-file-contents file-path)
+        (split-string (buffer-string) "\n" t)))))
+
+(eval-and-compile
+  (defvar ssh-config-keywords
+    (eval-when-compile
+      (ssh-config-read-keywords)))
+  "A list of keywords allowed in a user ssh config file.")
+
+(eval-and-compile
+  (defvar ssh-config-font-lock-keywords
+    (eval-when-compile
+      `((
+         ,(regexp-opt ssh-config-keywords 'words)
+         (1 font-lock-keyword-face)
+         )))
+    "Expressions to hilight in `ssh-config-mode'."))
+;; ssh-config-font-lock-keywords
 
 ;; Setup
 (defvar ssh-config-mode-load-hook nil
   "*Hook to run when `ssh-config-mode' is loaded.")
+
 ;;
 (defvar ssh-config-mode-hook nil
   "*Hook to setup `ssh-config-mode'.")
@@ -72,33 +107,7 @@
     (modify-syntax-entry ?\n ">" table)
     (setq ssh-config-mode-syntax-table table)))
 
-(defun ssh-config-read-keywords (&optional file-path)
-  (let ((file-path 
-         (or file-path 
-             (concat 
-              (file-name-as-directory ssh-config-load-file-dir) 
-              "ssh-config-keywords.txt"))))
-    (with-temp-buffer
-      (insert-file-contents file-path)
-      (split-string (buffer-string) "\n" t))))
-;; (ssh-config-read-keywords)
-
 ;; These keywords listed here to be fed into regexp-opt.
-
-(eval-and-compile
-
-  (defvar ssh-config-keywords (ssh-config-read-keywords))
-    "A list of keywords allowed in a user ssh config file.")
-
-(defvar ssh-config-font-lock-keywords
-  ;; how to put eval-when-compile without recursive require?
-  (eval-when-compile
-    `((
-       ,(regexp-opt ssh-config-keywords 'words)
-       (1 font-lock-keyword-face)
-       )))
-  "Expressions to hilight in `ssh-config-mode'.")
-;; ssh-config-font-lock-keywords
 
 ;;;###autoload
 (defun ssh-config-mode ()
