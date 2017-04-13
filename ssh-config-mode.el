@@ -11,7 +11,7 @@
 ;; License:   GPL v2
 ;; Keywords:  ssh, config, emacs
 ;; Version:   $Revision: 1.14 $
-;; Tag:       20160326T0550
+;; Tag:       20170413T0010
 
 ;;; Commentary:
 ;; * Fontifys the ssh config keywords.

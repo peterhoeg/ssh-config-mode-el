@@ -49,7 +49,7 @@ _update_tag:
 	echo "### Tagging as: '$(NEW_TAG)'..."
 	sed -i "" -e 's/^;; Tag: .*/;; Tag:       $(NEW_TAG)/' $(EL)
 	git commit -am "set tag to: '$(NEW_TAG)'"
-	git tag -a $(NEW_TAG) -m $(NEW_TAG)
+	git tag -f $(NEW_TAG)
 
 ###
 
