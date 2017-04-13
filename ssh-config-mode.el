@@ -45,7 +45,7 @@
 
 (eval-and-compile
   (defun ssh-config-read-keywords (&optional file-path)
-    (message "ssh-config-read-keywords")
+    ;; (message "ssh-config-read-keywords")
     (let ((file-path
            (or file-path
                (concat
