@@ -28,11 +28,18 @@
 ;; * This keeps checkdoc happy.
 
 ;;; Code:
+;; (load "ssh-config-mode.el")
+
+;; 
+(defvar ssh-config-load-file-dir 
+  (if load-file-name
+    (file-name-directory load-file-name)
+    default-directory)
+  "Where this file was loaded from.")
 
 ;; Setup
 (defvar ssh-config-mode-load-hook nil
   "*Hook to run when `ssh-config-mode' is loaded.")
-
 ;;
 (defvar ssh-config-mode-hook nil
   "*Hook to setup `ssh-config-mode'.")
@@ -65,79 +72,29 @@
     (modify-syntax-entry ?\n ">" table)
     (setq ssh-config-mode-syntax-table table)))
 
+(defun ssh-config-read-keywords (&optional file-path)
+  (let ((file-path 
+         (or file-path 
+             (concat 
+              (file-name-as-directory ssh-config-load-file-dir) 
+              "ssh-config-keywords.txt"))))
+    (with-temp-buffer
+      (insert-file-contents file-path)
+      (split-string (buffer-string) "\n" t))))
+;; (ssh-config-read-keywords)
+
 ;; These keywords listed here to be fed into regexp-opt.
-;; (from ssh-v4)
+
 (eval-and-compile
 
-  (defvar ssh-config-words-ssh
-    '("AddKeysToAgent" "AddressFamily" "BatchMode" "BindAddress"
-      "CanonicalDomains" "CanonicalizeFallbackLocal" "CanonicalizeHostname"
-      "CanonicalizeMaxDots" "CanonicalizePermittedCNAMEs" "CertificateFile"
-      "ChallengeResponseAuthentication" "CheckHostIP" "Cipher"
-      "Ciphers" "ClearAllForwardings" "Compression" "ControlPersist"
-      "CompressionLevel" "ConnectionAttempts" "ConnectTimeout"
-      "ControlMaster" "ControlPath" "DynamicForward" "EscapeChar"
-      "ExitOnForwardFailure" "FingerprintHash" "ForwardAgent" "ForwardX11"
-      "ForwardX11Timeout" "ForwardX11Trusted" "GatewayPorts"
-      "GlobalKnownHostsFile" "GSSAPIAuthentication"
-      "GSSAPIDelegateCredentials" "HashKnownHosts" "Host"
-      "HostbasedAuthentication" "HostbasedKeyTypes"
-      "HostKeyAlgorithms" "HostKeyAlias"
-      "HostName" "IdentityAgent" "IdentityFile" "IgnoreUnknown"
-      "Include" "IdentitiesOnly" "IPQoS"
-      "KbdInteractiveAuthentication" "KbdInteractiveDevices"
-      "KexAlgorithms" "LocalCommand" "LocalForward" "LogLevel" "MACs"
-      "NoHostAuthenticationForLocalhost" "NumberOfPasswordPrompts"
-      "PKCS11Provider" "PasswordAuthentication" "PermitLocalCommand"
-      "Port" "PreferredAuthentications" "Protocol" "ProxyCommand"
-      "ProxyJump" "ProxyUseFdpass" "PubkeyAcceptedKeyTypes"
-      "PubkeyAuthentication" "RekeyLimit" "RemoteForward" "RequestTTY"
-      "RevokedHostKeys" "RhostsRSAAuthentication" "RSAAuthentication" "SendEnv"
-      "ServerAliveInterval" "ServerAliveCountMax"
-      "StreamLocalBindMask" "StreamLocalBindUnlink"
-      "StrictHostKeyChecking" "TCPKeepAlive" "Tunnel" "TunnelDevice"
-      "UpdateHostKeys" "UseKeychain"
-      "UsePrivilegedPort" "User" "UserKnownHostsFile"
-      "VerifyHostKeyDNS" "VisualHostKey" "XAuthLocation"
-
-      ;; obsoleted keywords
-      "SmartcardDevice")
+  (defvar ssh-config-keywords (ssh-config-read-keywords))
     "A list of keywords allowed in a user ssh config file.")
-
-  (defvar ssh-config-words-sshd
-    '("AcceptEnv" "AddressFamily" "AllowAgentForwarding" "AllowGroups"
-      "AllowTcpForwarding" "AllowUsers" "AuthorizedKeysFile"
-      "AuthorizedPrincipalsFile" "Banner"
-      "ChallengeResponseAuthentication" "ChrootDirectory" "Ciphers"
-      "ClientAliveInterval" "ClientAliveCountMax" "Compression"
-      "DebianBanner" "DenyGroups" "DenyUsers" "ForceCommand"
-      "GatewayPorts" "GSSAPIAuthentication" "GSSAPICleanupCredentials"
-      "GSSAPIKeyExchange" "HostbasedAuthentication"
-      "GSSAPIStrictAcceptorCheck" "HostKey"
-      "GSSAPIStoreCredentialsOnRekey" "IgnoreRhosts"
-      "HostbasedUsesNameFromPacketOnly" "IgnoreUserKnownHosts"
-      "HostCertificate" "KerberosAuthentication" "IPQoS"
-      "KerberosGetAFSToken" "KerberosOrLocalPasswd"
-      "KerberosTicketCleanup" "KexAlgorithms"
-      "KeyRegenerationInterval" "ListenAddress" "LoginGraceTime"
-      "LogLevel" "MACs" "Match" "MaxAuthTries" "MaxSessions"
-      "MaxStartups" "PasswordAuthentication" "PermitBlacklistedKeys"
-      "PermitEmptyPasswords" "PermitOpen" "PermitRootLogin"
-      "PermitTunnel" "PermitUserEnvironment" "PidFile" "Port"
-      "PrintLastLog" "PrintMotd" "Protocol" "PubkeyAuthentication"
-      "RevokedKeys" "RhostsRSAAuthentication" "RSAAuthentication"
-      "ServerKeyBits" "StrictModes" "Subsystem" "SyslogFacility"
-      "TCPKeepAlive" "TrustedUserCAKeys" "UseDNS" "UseLogin" "UsePAM"
-      "UsePrivilegeSeparation" "X11DisplayOffset" "X11Forwarding"
-      "X11UseLocalhost" "XAuthLocation")
-    "A list of keywords allowed in a system sshd config file.")
-  nil)
 
 (defvar ssh-config-font-lock-keywords
   ;; how to put eval-when-compile without recursive require?
   (eval-when-compile
     `((
-       ,(regexp-opt (append ssh-config-words-ssh ssh-config-words-sshd) 'words)
+       ,(regexp-opt ssh-config-keywords 'words)
        (1 font-lock-keyword-face)
        )))
   "Expressions to hilight in `ssh-config-mode'.")

@@ -1,0 +1,87 @@
+#!/usr/bin/env python3
+#
+# ssh-config-mode-el/get-keywords/get-keywords ---
+#
+
+# 1/2 => 0.5  1//2 => 0
+from __future__ import absolute_import, division, print_function, unicode_literals
+
+import argparse
+import math
+import os
+import os.path
+import pdb
+import pprint
+import re
+import subprocess
+import sys
+import traceback
+
+##########
+
+DEBUG=None
+VERBOSE=None
+VERSION=''
+
+##########
+
+def main(raw_args):
+  global DEBUG,VERBOSE,VERSION
+  #
+  parser=argparse.ArgumentParser(formatter_class=argparse.RawTextHelpFormatter)
+  parser.description="""
+DESCRIPTION:
+
+"""
+  parser.epilog="""
+EXAMPLES:
+
+"""
+  #
+  g = parser.add_argument_group('GENERAL')
+  g.add_argument("--debug","-d",
+                 action="store_true",
+                 help="Turn on the debugging flag.")
+  g.add_argument("--pdb",
+                 action="store_true",
+                 help="Enter the debugger after reading args.")
+  g.add_argument("--verbose","-v",
+                 action="store_true",
+                 help="Be more verbose.")
+  g.add_argument("--config","-c",
+                 dest="config_paths",
+                 action="append",
+                 help="Config path to read.")
+
+  #
+  g = parser.add_argument_group('ARGS')
+  g.add_argument("args",nargs="*",
+                 help="The remaining args.")
+
+  #
+  args=parser.parse_args(raw_args)
+  #
+  if args.pdb:
+    pdb.set_trace()
+  if args.debug:
+    DEBUG=args.debug
+  if args.verbose:
+    VERBOSE=args.verbose
+
+  #
+  keyword_set=set()
+  keyword_re=re.compile("\\bo(?P<keyword>[A-Z][A-Za-z]*)")
+  for arg in args.args:
+    for line in open(arg).readlines():
+      for m in re.finditer(keyword_re,line):
+        keyword_set.add(m.group("keyword"))
+  #
+  print("\n".join(sorted(keyword_set)))
+
+#
+if __name__ == "__main__":
+  sys.exit(main(sys.argv[1:]))
+
+# Local Variables:
+# mode: python
+# End:
