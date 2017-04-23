@@ -33,6 +33,9 @@ _checkdoc_batch: | checkdoc-batch.el
 _update_keywords:
 	cd get-keywords && make _update_keywords
 
+_jenkinsfile_sh:
+	./Jenkinsfile.sh
+
 ###
 
 _clean:
