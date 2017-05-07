@@ -34,7 +34,10 @@ then
 else
   echo "### ssh-config-keywords.txt: updating to ${openssh_git_id}"
   git commit -a -m "ssh-config-keywords.txt: updated to ${openssh_git_id}"
-  git tag "${openssh_git_id}"
-  git push
+  git push origin HEAD:master
+  #
+  git tag -f "${openssh_git_id}"
+  git push origin "${openssh_git_id}"
+  #
   echo "### update complete..."
 fi
