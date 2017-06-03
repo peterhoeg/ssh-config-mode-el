@@ -71,6 +71,7 @@ PubkeyAcceptedKeyTypes
 PubkeyAuthentication
 RSAAuthentication
 RekeyLimit
+RemoteCommand
 RemoteForward
 RequestTTY
 RevokedHostKeys
