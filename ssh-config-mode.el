@@ -83,11 +83,11 @@
 
 (defun ssh-config-host-next ()
   "Skip to the next host entry."
-  (interactive)
+  (interactive "^")
   (search-forward-regexp ssh-config-host-regexp))
 (defun ssh-config-host-prev ()
   "Skip to the previous host entry."
-  (interactive)
+  (interactive "^")
   (search-backward-regexp ssh-config-host-regexp))
 
 ;;
