@@ -6,7 +6,7 @@
 ;;
 
 ;; Author:    Harley Gorrell <harley@panix.com>
-;; URL:       http://www.mahalito.net/~harley/elisp/ssh-config-mode.el
+;; URL:       https://github.com/jhgorrell/ssh-config-mode-el
 ;; Github:    https://raw.github.com/jhgorrell/ssh-config-mode-el/master/ssh-config-mode.el
 ;; License:   GPL v2
 ;; Keywords:  ssh, config, emacs
