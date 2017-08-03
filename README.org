@@ -4,7 +4,8 @@
 #+TEXT:    $Id: README.org,v 1.2 2012/05/14 05:31:28 harley Exp $
 
 * ssh-config-mode.el
-  A mode to edit =~/.ssh/config= files.
+
+A mode to edit =~/.ssh/config= files.
 
 - Fontifys the ssh config keywords.
 - Keys for skipping from host section to host section.
@@ -17,10 +18,16 @@
 :  (add-to-list 'auto-mode-alist '("/authorized_keys2?\\'" . ssh-authorized-keys-mode))
 :  (add-hook 'ssh-config-mode-hook 'turn-on-font-lock)
 
-
 * Links
 
 - https://github.com/jhgorrell/ssh-config-mode-el
 - https://gitlab.com/jhgorrell/ssh-config-mode-el
 - https://circleci.com/gh/jhgorrell/ssh-config-mode-el
 - https://github.com/openssh/openssh-portable
+
+
+* LICENSE
+
+~ssh-config-mode-el~ is distributed under the
+[[https://www.gnu.org/licenses/gpl-3.0.txt][GPL-3.0]] 
+(or any later version.)
