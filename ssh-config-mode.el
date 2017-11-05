@@ -105,12 +105,24 @@
   (interactive "^")
   (search-backward-regexp ssh-config-host-regexp))
 
+(defun ssh-config-indent-line ()
+  "Indent lines in the SSH config file"
+  (interactive)
+  (let ((start-of-regex "^\\([ \t]\\)?.*"))
+    (save-excursion
+      (beginning-of-line)
+      (cond
+       ((or (bobp) (looking-at (concat start-of-regex "#"))) (indent-line-to 0))
+       ((looking-at (concat start-of-regex (regexp-opt (remove "Host" ssh-config-keywords))))
+	(indent-line-to 2))))))
+
 ;;
 (defvar ssh-config-mode-map
   (let ((map (make-sparse-keymap)))
     ;; Ctrl bindings
     (define-key map [C-up]   'ssh-config-host-prev)
     (define-key map [C-down] 'ssh-config-host-next)
+    (define-key map [?\t] 'ssh-config-indent-line)
     map)
   "The local keymap for `ssh-config-mode'.")
 
