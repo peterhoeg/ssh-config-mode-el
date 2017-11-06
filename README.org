@@ -20,8 +20,12 @@ known_hosts
 authorized_keys2?
 #+END_EXAMPLE
 
-If you have a SSH config file that you'd like to use this mode on
-automatically, every time you open it, set it up like this:
+If you have a SSH config file that you'd like to use this
+mode on automatically, add this line as the first one in the file:
+
+: # -*- mode: ssh-config -*-
+
+Or add somthing like this to your init file:
 
 :  (add-to-list 'auto-mode-alist '("/path-to-your-ssh/config\\'" . ssh-config-mode))
 
