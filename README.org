@@ -1,22 +1,29 @@
-# -*- mode: org -*- 
+# -*- mode: org -*-
 #+AUTHOR:  harley
 #+EMAIL:   harley@panix.com
 #+TEXT:    $Id: README.org,v 1.2 2012/05/14 05:31:28 harley Exp $
 
 * ssh-config-mode.el
 
-A mode to edit =~/.ssh/config= files.
+A mode to edit SSH config files.
 
-- Fontifys the ssh config keywords.
+It does the following:
+
+- Fontifys the SSH config keywords.
 - Keys for skipping from host section to host section.
-- Add the following to your startup file.
+- Indentation of configuration found in the following locations:
 
-:  (autoload 'ssh-config-mode "ssh-config-mode" t)
-:  (add-to-list 'auto-mode-alist '("/\\.ssh/config\\'"     . ssh-config-mode))
-:  (add-to-list 'auto-mode-alist '("/sshd?_config\\'"      . ssh-config-mode))
-:  (add-to-list 'auto-mode-alist '("/known_hosts\\'"       . ssh-known-hosts-mode))
-:  (add-to-list 'auto-mode-alist '("/authorized_keys2?\\'" . ssh-authorized-keys-mode))
-:  (add-hook 'ssh-config-mode-hook 'turn-on-font-lock)
+#+BEGIN_EXAMPLE
+.ssh/config
+sshd?_config
+known_hosts
+authorized_keys2?
+#+END_EXAMPLE
+
+If you have a SSH config file that you'd like to use this mode on
+automatically, every time you open it, set it up like this:
+
+:  (add-to-list 'auto-mode-alist '("/path-to-your-ssh/config\\'" . ssh-config-mode))
 
 * Links
 
@@ -29,5 +36,5 @@ A mode to edit =~/.ssh/config= files.
 * LICENSE
 
 ~ssh-config-mode-el~ is distributed under the
-[[https://www.gnu.org/licenses/gpl-3.0.txt][GPL-3.0]] 
+[[https://www.gnu.org/licenses/gpl-3.0.txt][GPL-3.0]]
 (or any later version.)
