@@ -96,6 +96,13 @@
 (defvar ssh-config-host-regexp "^\\s-*Host\\b"
   "Regexp to match the start of a host entry.")
 
+(defcustom ssh-config-mode-indent 8
+  "The width of indentation to use.
+By default it's set to 2 as that is what man page
+ssh_config(5) shows it as."
+  :type 'integer
+  :group 'ssh-config-mode)
+
 (defun ssh-config-host-next ()
   "Skip to the next host entry."
   (interactive "^")
@@ -114,7 +121,7 @@
       (cond
        ((or (bobp) (looking-at (concat start-of-regex "#"))) (indent-line-to 0))
        ((looking-at (concat start-of-regex (regexp-opt (remove "Host" ssh-config-keywords))))
-	(indent-line-to 2))))))
+	(indent-line-to ssh-config-mode-indent))))))
 
 ;;
 (defvar ssh-config-mode-map
