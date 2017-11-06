@@ -93,24 +93,54 @@
 ;;
 (defvar ssh-config-mode-hook nil
   "*Hook to setup `ssh-config-mode'.")
+
 (defvar ssh-config-host-regexp "^\\s-*Host\\b"
   "Regexp to match the start of a host entry.")
+
+(defcustom ssh-config-mode-indent 2
+  "The width of indentation to use.
+By default it's set to 2 as that is what man page
+ssh_config(5) shows it as."
+  :type 'integer
+  :group 'ssh-config-mode)
 
 (defun ssh-config-host-next ()
   "Skip to the next host entry."
   (interactive "^")
   (search-forward-regexp ssh-config-host-regexp))
+
 (defun ssh-config-host-prev ()
   "Skip to the previous host entry."
   (interactive "^")
   (search-backward-regexp ssh-config-host-regexp))
 
+(defun ssh-config-in-host-block-p ()
+  "Are we inside a Host block?"
+  (save-excursion
+    (search-backward-regexp ssh-config-host-regexp nil t)))
+
+(defun ssh-config-compute-indent ()
+  "Compute the target indent for the current line."
+  (save-excursion
+    (beginning-of-line)
+    (cond
+     ((or (looking-at "\\s-*Host") (not (ssh-config-in-host-block-p))) 0)
+     (t ssh-config-mode-indent))))
+
+(defun ssh-config-indent-line ()
+  "Indent lines in the SSH config file."
+  (interactive)
+  (let ((target (ssh-config-compute-indent)))
+    (save-excursion
+      (indent-line-to target))))
+
 ;;
 (defvar ssh-config-mode-map
   (let ((map (make-sparse-keymap)))
     ;; Ctrl bindings
-    (define-key map [C-up]   'ssh-config-host-prev)
-    (define-key map [C-down] 'ssh-config-host-next)
+    (define-key map [C-up]      'ssh-config-host-prev)
+    (define-key map [C-down]    'ssh-config-host-next)
+    (define-key map (kbd "TAB") 'indent-for-tab-command)
     map)
   "The local keymap for `ssh-config-mode'.")
 
@@ -141,6 +171,8 @@
   ;;
   (make-local-variable 'font-lock-defaults)
   (setq font-lock-defaults '(ssh-config-font-lock-keywords nil t))
+  ;;
+  (setq-local indent-line-function 'ssh-config-indent-line)
   ;;
   (run-hooks 'ssh-config-mode-hook)
   nil)
