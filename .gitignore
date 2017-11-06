@@ -3,6 +3,7 @@
 *.stdout
 *.tmp
 *.xml
+*example*
 *~
 \#*\#
 checkdoc-batch.el
