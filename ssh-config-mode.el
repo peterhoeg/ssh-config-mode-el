@@ -120,13 +120,25 @@ ssh_config(5) shows it as."
     (search-backward-regexp ssh-config-host-regexp nil t)))
 
 (defun ssh-config-compute-indent ()
-  "Compute the target indent for the current line."
+  "Compute the target indent for the current line.
+Comments right above a 'Host' are considered to be about that Host.
+"
   (save-excursion
     (beginning-of-line)
     (cond
+     ;; Start of file and "Host" should be at 0
      ((or (looking-at ssh-config-host-regexp)
-          (not (ssh-config-in-host-block-p))) 
+          (not (ssh-config-in-host-block-p)))
       0)
+     ;; Comment line
+     ((looking-at "\\s-*#")
+      ;; comments right before a "Host"" should be at 0
+      (while (looking-at "\\s-*#")
+        (forward-line))
+      (if (looking-at ssh-config-host-regexp)
+        0
+        ssh-config-mode-indent))
+     ;; default.
      (t
       ssh-config-mode-indent))))
 
