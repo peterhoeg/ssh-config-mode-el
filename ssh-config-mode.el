@@ -124,8 +124,11 @@ ssh_config(5) shows it as."
   (save-excursion
     (beginning-of-line)
     (cond
-     ((or (looking-at "\\s-*Host") (not (ssh-config-in-host-block-p))) 0)
-     (t ssh-config-mode-indent))))
+     ((or (looking-at ssh-config-host-regexp)
+          (not (ssh-config-in-host-block-p))) 
+      0)
+     (t
+      ssh-config-mode-indent))))
 
 (defun ssh-config-indent-line ()
   "Indent lines in the SSH config file."
