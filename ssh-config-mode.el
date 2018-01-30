@@ -217,7 +217,7 @@ Comments right above a 'Host' are considered to be about that Host.
        ;; marker (optional)
        "\\(?:\\(@[^[:space:]]+\\)\\s-+\\)?"
        ;; hostnames
-       "\\([-*a-z0-9.,]+\\||[^[:space:]]+\\)\\s-+"
+       "\\([][*a-z0-9.,:-]+\\||[^[:space:]]+\\)\\s-+"       
        ;; public key (fontify just key type)
        "\\(\\(?:ssh\\|ecdsa\\)[^[:space:]]*\\|\\)"
        )
