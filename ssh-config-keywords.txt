@@ -80,6 +80,7 @@ RhostsRSAAuthentication
 SendEnv
 ServerAliveCountMax
 ServerAliveInterval
+SetEnv
 StreamLocalBindMask
 StreamLocalBindUnlink
 StrictHostKeyChecking
