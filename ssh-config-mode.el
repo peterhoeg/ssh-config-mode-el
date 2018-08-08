@@ -97,6 +97,13 @@
 (defvar ssh-config-host-regexp "^\\s-*Host\\b"
   "Regexp to match the start of a host entry.")
 
+(defvar ssh-config-match-regexp "^\\s-*Match\\b"
+  "Regexp to match the start of a match entry.")
+
+(defvar ssh-config-hostnames-regexp
+  "[-*?a-z0-9.[:space:]]+"
+  "Regexp to match a list of one or more hostnames.")
+
 (defcustom ssh-config-mode-indent 2
   "The width of indentation to use.
 By default it's set to 2 as that is what man page
@@ -167,6 +174,11 @@ Comments right above a 'Host' are considered to be about that Host.
     (modify-syntax-entry ?\n ">" table)
     (setq ssh-config-mode-syntax-table table)))
 
+(defvar ssh-config-imenu-generic-expression
+  `(("Hosts" ,(concat ssh-config-host-regexp "\\s-+\\(" ssh-config-hostnames-regexp "\\)") 1)
+    ("Matches" ,(concat ssh-config-match-regexp "\\s-+\\(.*\\)") 1))
+  "Value for `imenu-generic-expression' in `ssh-config-mode'.")
+
 ;; These keywords listed here to be fed into regexp-opt.
 
 ;;;###autoload
@@ -188,6 +200,7 @@ Comments right above a 'Host' are considered to be about that Host.
   (setq font-lock-defaults '(ssh-config-font-lock-keywords nil t))
   ;;
   (setq-local indent-line-function 'ssh-config-indent-line)
+  (setq-local imenu-generic-expression ssh-config-imenu-generic-expression)
   ;;
   (run-hooks 'ssh-config-mode-hook)
   nil)
