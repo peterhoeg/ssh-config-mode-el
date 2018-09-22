@@ -4,6 +4,7 @@ BadOption
 BatchMode
 BindAddress
 BindInterface
+CASignatureAlgorithms
 CanonicalDomains
 CanonicalizeFallbackLocal
 CanonicalizeHostname
