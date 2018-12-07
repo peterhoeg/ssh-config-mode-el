@@ -30,7 +30,9 @@ EscapeChar
 ExitOnForwardFailure
 FingerprintHash
 ForwardAgent
-ForwardX
+ForwardX11
+ForwardX11Timeout
+ForwardX11Trusted
 GatewayPorts
 GlobalKnownHostsFile
 GssAuthentication
@@ -61,7 +63,7 @@ Macs
 Match
 NoHostAuthenticationForLocalhost
 NumberOfPasswordPrompts
-PKCS
+PKCS11Provider
 PasswordAuthentication
 PermitLocalCommand
 Port
