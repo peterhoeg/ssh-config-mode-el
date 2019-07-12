@@ -39,9 +39,9 @@ HashKnownHosts
 Host
 HostKeyAlgorithms
 HostKeyAlias
-HostName
 HostbasedAuthentication
 HostbasedKeyTypes
+Hostname
 IPQoS
 IdentitiesOnly
 IdentityAgent
