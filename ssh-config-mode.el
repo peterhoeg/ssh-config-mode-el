@@ -20,7 +20,7 @@
 ;;   (autoload 'ssh-config-mode "ssh-config-mode" t)
 ;;   (add-to-list 'auto-mode-alist '("/\\.ssh/config\\'"     . ssh-config-mode))
 ;;   (add-to-list 'auto-mode-alist '("/sshd?_config\\'"      . ssh-config-mode))
-;;   (add-to-list 'auto-mode-alist '("/known_hosts\\'"       . ssh-known-hosts-mode))
+;;   (add-to-list 'auto-mode-alist '("/knownhosts\\'"       . ssh-known-hosts-mode))
 ;;   (add-to-list 'auto-mode-alist '("/authorized_keys2?\\'" . ssh-authorized-keys-mode))
 ;;   (add-hook 'ssh-config-mode-hook 'turn-on-font-lock)
 
@@ -100,9 +100,9 @@
 (defvar ssh-config-match-regexp "^\\s-*Match\\b"
   "Regexp to match the start of a match entry.")
 
-(defvar ssh-config-hostnames-regexp
-  "[-*?a-z0-9.[:space:]]+"
-  "Regexp to match a list of one or more hostnames.")
+(defvar ssh-config-hostname-regexp
+  "[-_.a-zA-Z0-9]+"
+  "Regexp to match one hostname. (rfc1123 2.1)")
 
 (defcustom ssh-config-mode-indent 2
   "The width of indentation to use.
@@ -176,10 +176,11 @@ Comments right above a 'Host' are considered to be about that Host.
 
 (defvar ssh-config-imenu-generic-expression
   `(("Hosts" 
-     ,(concat ssh-config-host-regexp "\\s-+\\(" ssh-config-hostnames-regexp "\\)") 1)
+     ,(concat ssh-config-host-regexp "\\s-+\\(" ssh-config-hostname-regexp "\\)") 1)
     ("Matches" 
      ,(concat ssh-config-match-regexp "\\s-+\\(.*\\)") 1))
-  "Value for `imenu-generic-expression' in `ssh-config-mode'.")
+  "Value for `imenu-generic-expression' in `ssh-config-mode'.
+Only show the first hostname in the menu.")
 
 ;;;###autoload
 (defun ssh-config-mode ()
