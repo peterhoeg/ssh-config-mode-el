@@ -175,11 +175,11 @@ Comments right above a 'Host' are considered to be about that Host.
     (setq ssh-config-mode-syntax-table table)))
 
 (defvar ssh-config-imenu-generic-expression
-  `(("Hosts" ,(concat ssh-config-host-regexp "\\s-+\\(" ssh-config-hostnames-regexp "\\)") 1)
-    ("Matches" ,(concat ssh-config-match-regexp "\\s-+\\(.*\\)") 1))
+  `(("Hosts" 
+     ,(concat ssh-config-host-regexp "\\s-+\\(" ssh-config-hostnames-regexp "\\)") 1)
+    ("Matches" 
+     ,(concat ssh-config-match-regexp "\\s-+\\(.*\\)") 1))
   "Value for `imenu-generic-expression' in `ssh-config-mode'.")
-
-;; These keywords listed here to be fed into regexp-opt.
 
 ;;;###autoload
 (defun ssh-config-mode ()
