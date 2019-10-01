@@ -70,7 +70,7 @@ EXAMPLES:
 
   #
   keyword_set=set()
-  keyword_re=re.compile("\\bo(?P<keyword>[A-Z][A-Za-z]*)")
+  keyword_re=re.compile("\\bo(?P<keyword>[A-Z][A-Za-z0-9]*)")
   for arg in args.args:
     for line in open(arg).readlines():
       for m in re.finditer(keyword_re,line):
