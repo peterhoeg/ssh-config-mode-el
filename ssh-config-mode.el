@@ -213,23 +213,73 @@ Comments right above a 'Host' are considered to be about that Host.
 (defvar ssh-known-hosts-font-lock-keywords
   ;; how to put eval-when-compile without recursive require?
   `((,(concat
+
+       ;; The below is translated from this PCRE-compatible regex
+       ;; /(?x)
+
+       ;; ^
+       ;; # marker (optional)
+       ;; (@cert-authority|@revoked)?
+       ;; \s*
+
+       ;; ( # hostnames
+       ;;     (?:
+       ;;         (?: # - on standard port
+       ;;             [\.\-\?\*a-zA-Z0-9]+
+       ;;             | # - on non-standard port with brackets
+       ;;             \[ [\.\-\?\*a-zA-Z0-9]+ \]:\d{1,5}
+       ;;         )
+       ;;         (?:\b|,)?
+       ;;     )+
+       ;; )
+       ;; \s+
+       ;; ( # key type
+       ;;     (?:ssh|ecdsa)[\-a-zA-Z0-9]+\b
+       ;; )
+       ;; \s+
+       ;; ( # public key
+       ;;     AAAA[0-9A-Za-z\/\+]+
+       ;;     [=]{0,3}
+       ;; )
+       ;; /
+
        "^"
        ;; marker (optional)
-       "\\(?:\\(@[^[:space:]]+\\)\\s-+\\)?"
+       "\\(\\(?:@\\(?:cert-authority\\|revoked\\)\\)\\|\\)"
+       "[[:blank:]]*"
+
        ;; hostnames
-       "\\([-*a-z0-9.,]+\\||[^[:space:]]+\\)\\s-+"
-       ;; public key (fontify just key type)
-       "\\(\\(?:ssh\\|ecdsa\\)[^[:space:]]*\\|\\)"
+       "\\("
+       "\\(?:" ;; match multiple names
+       "\\(?:"
+       ;; - on standard port
+       "[-*.?[:word:]]+"
+       "\\|"
+       ;; - on non-standard port with brackets
+       "\\[[-*.?[:word:]]+]:[[:digit:]]\\{1,5\\}"
+       "\\)"
+       "\\(?:,\\|\\b\\)?" ;; separated by commas
+       "\\)+"
+       "\\)"
+       "[[:blank:]]+"
+
+       ;; key type
+       "\\(\\(?:ecdsa\\|ssh\\)[-[:word:]]+\\b\\)"
+       "[[:blank:]]+"
+
+       ;; public key
+       "\\(AAAA[+/[:word:]]+=\\{0,3\\}\\)"
        )
-     (1 font-lock-variable-name-face nil t)
+     (1 font-lock-warning-face)
      (2 font-lock-function-name-face)
      (3 font-lock-keyword-face)
+     (4 font-lock-string-face)
      )
     ("^[[:space:]]*\\(#.*\\)"
      (1 font-lock-comment-face))
     )
-  "Expressions to hilight in `ssh-config-mode'.")
-;; ssh-config-font-lock-keywords
+  "Expressions to hilight in `ssh-known-hosts-mode'.")
+;; ssh-known-hosts-font-lock-keywords
 
 ;;;###autoload
 (defun ssh-known-hosts-mode ()
