@@ -38,6 +38,15 @@ _jenkinsfile_sh:
 
 ###
 
+# Will need to edit this
+_contributors:
+	@git log --format='- %an' HEAD^@ | \
+	  sort | \
+	  grep -v -e 'harley gorrell' -e 'jenkins-bot' -e 'jhgorrell' | \
+	  uniq
+
+###
+
 _clean:
 	-rm *.elc junit.xml junit.xml.tmp
 

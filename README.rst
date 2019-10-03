@@ -50,3 +50,18 @@ License
 ``ssh-config-mode-el`` is distributed under the
 `GPL-3.0 <https://www.gnu.org/licenses/gpl-3.0.txt>`_
 (or any later version.)
+
+Contributors
+--------------------------------------------------
+
+- Harley Gorrell
+- John Mastro
+- Masahiro Hayashi
+- Matthew Weaver
+- Sharif Nassar
+- Ted Carnahan
+- USAMI Kenta
+- Wieland Hoffmann
+- iory
+- Александар Симић
+
