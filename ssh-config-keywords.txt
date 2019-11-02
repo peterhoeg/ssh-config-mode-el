@@ -80,6 +80,7 @@ RemoteForward
 RequestTTY
 RevokedHostKeys
 RhostsRSAAuthentication
+SecurityKeyProvider
 SendEnv
 ServerAliveCountMax
 ServerAliveInterval
