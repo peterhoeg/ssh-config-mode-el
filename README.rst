@@ -11,7 +11,7 @@ A mode to edit SSH config files.
 
 It does the following:
 
-- Fontifys the SSH config keywords.
+- Fontifys and completes the SSH config keywords.
 - Keys for skipping from host section to host section.
 - Indentation of configuration found in the following locations:
 
