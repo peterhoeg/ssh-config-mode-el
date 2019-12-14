@@ -182,6 +182,11 @@ Comments right above a 'Host' are considered to be about that Host.
   "Value for `imenu-generic-expression' in `ssh-config-mode'.
 Only show the first hostname in the menu.")
 
+(defun ssh-config-capf ()
+  (save-match-data
+    (if (looking-back "^[[:blank:]]*\\([[:alpha:]]*\\)" (line-beginning-position))
+	(list (match-beginning 1) (point) ssh-config-keywords))))
+
 ;;;###autoload
 (defun ssh-config-mode ()
   "Major mode for fontifiying ssh config files.
@@ -199,6 +204,9 @@ Only show the first hostname in the menu.")
   ;;
   (make-local-variable 'font-lock-defaults)
   (setq font-lock-defaults '(ssh-config-font-lock-keywords nil t))
+  ;;
+  (make-local-variable 'completion-at-point-functions)
+  (add-to-list 'completion-at-point-functions #'ssh-config-capf)
   ;;
   (setq-local indent-line-function 'ssh-config-indent-line)
   (setq-local imenu-generic-expression ssh-config-imenu-generic-expression)
