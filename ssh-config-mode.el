@@ -184,7 +184,7 @@ Only show the first hostname in the menu.")
 
 (defun ssh-config-capf ()
   (save-match-data
-    (if (looking-back "^[[:blank:]]*\\([[:alpha:]]*\\)" (line-beginning-position))
+    (if (looking-back "^[[:blank:]]*\\([[:alpha:][:digit:]]*\\)" (line-beginning-position))
 	(list (match-beginning 1) (point) ssh-config-keywords))))
 
 ;;;###autoload
