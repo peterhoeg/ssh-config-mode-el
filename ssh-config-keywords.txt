@@ -13,11 +13,9 @@ CanonicalizePermittedCNAMEs
 CertificateFile
 ChallengeResponseAuthentication
 CheckHostIP
-Cipher
 Ciphers
 ClearAllForwardings
 Compression
-CompressionLevel
 ConnectTimeout
 ConnectionAttempts
 ControlMaster
@@ -73,13 +71,11 @@ ProxyJump
 ProxyUseFdpass
 PubkeyAcceptedKeyTypes
 PubkeyAuthentication
-RSAAuthentication
 RekeyLimit
 RemoteCommand
 RemoteForward
 RequestTTY
 RevokedHostKeys
-RhostsRSAAuthentication
 SecurityKeyProvider
 SendEnv
 ServerAliveCountMax
@@ -93,7 +89,6 @@ Tunnel
 TunnelDevice
 Unsupported
 UpdateHostkeys
-UsePrivilegedPort
 User
 UserKnownHostsFile
 VerifyHostKeyDNS
