@@ -51,30 +51,7 @@
 ;; We use eval-and-compile so we can use them at compile
 ;; time and call regexp-opt during compliation.
 
-(eval-and-compile
-  (defvar ssh-config-load-file-dir
-    (if load-file-name
-      (file-name-directory load-file-name)
-      default-directory)
-    "Where this file was loaded from."))
-
-(eval-and-compile
-  (defun ssh-config-read-keywords (&optional file-path)
-    ;; (message "ssh-config-read-keywords")
-    (let ((file-path
-           (or file-path
-               (concat
-                (file-name-as-directory ssh-config-load-file-dir)
-                "ssh-config-keywords.txt"))))
-      (with-temp-buffer
-        (insert-file-contents file-path)
-        (split-string (buffer-string) "\n" t)))))
-
-(eval-and-compile
-  (defvar ssh-config-keywords
-    (eval-when-compile
-      (ssh-config-read-keywords)))
-  "A list of keywords allowed in a user ssh config file.")
+(require 'ssh-config-keywords)
 
 (eval-and-compile
   (defvar ssh-config-font-lock-keywords

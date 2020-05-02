@@ -64,4 +64,5 @@ Contributors
 - Wieland Hoffmann
 - iory
 - Александар Симић
+- Andrew Schwartzmeyer
 
