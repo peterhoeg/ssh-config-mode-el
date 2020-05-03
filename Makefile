@@ -13,7 +13,9 @@ _default: _byte_compile
 
 _byte_compile:
 	-rm *.elc
-	emacs --batch \
+	emacs \
+	  --batch \
+	  --eval "(add-to-list 'load-path \"${PWD}\")" \
 	  --funcall batch-byte-compile \
 	  ${EL}
 

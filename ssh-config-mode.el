@@ -103,7 +103,7 @@ When testing add '.' to load-path so you find the local copy."
 
 (defvar ssh-config-hostname-regexp
   "[-_.a-zA-Z0-9]+"
-  "Regexp to match one hostname. (rfc1123 2.1)")
+  "Regexp to match one hostname.  (rfc1123 2.1).")
 
 (defcustom ssh-config-mode-indent 2
   "The width of indentation to use.
@@ -129,8 +129,7 @@ ssh_config(5) shows it as."
 
 (defun ssh-config-compute-indent ()
   "Compute the target indent for the current line.
-Comments right above a 'Host' are considered to be about that Host.
-"
+Comments right above a 'Host' are considered to be about that Host."
   (save-excursion
     (beginning-of-line)
     (cond

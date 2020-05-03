@@ -41,4 +41,4 @@ _test_pkg_install: ${scm_tar}
 # remove the existing install
 	rm -rf ~/.emacs.d/elpa/ssh-config-mode-*
 # install ssh-config-mode non-interactively
-	emacs -Q -l test-pkg-install.el
+	emacs --batch -Q -l test-pkg-install.el
