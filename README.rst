@@ -6,7 +6,7 @@ ssh-config-mode-el/README
 
 .. image:: https://circleci.com/gh/jhgorrell/ssh-config-mode-el.svg?style=svg
    :target: https://circleci.com/gh/jhgorrell/ssh-config-mode-el
-        
+
 A mode to edit SSH config files.
 
 It does the following:
@@ -64,4 +64,4 @@ Contributors
 - Wieland Hoffmann
 - iory
 - Александар Симић
-
+- Andrew Schwartzmeyer

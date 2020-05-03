@@ -52,20 +52,21 @@
 ;; time and call regexp-opt during compliation.
 
 (eval-and-compile
-  (defvar ssh-config-load-file-dir
-    (if load-file-name
-      (file-name-directory load-file-name)
-      default-directory)
-    "Where this file was loaded from."))
+  (defun ssh-config-ssh-config-keywords-path ()
+    "Find the path to 'ssh-config-keywords.txt'.
+It should be next to 'ssh-config-mode.el'.
+When testing add '.' to load-path so you find the local copy."
+    (let ((path (locate-library "ssh-config-keywords.txt" nil)))
+      ;;(message "ssh-config-keywords.txt is %s" path)
+      path)))
 
 (eval-and-compile
   (defun ssh-config-read-keywords (&optional file-path)
+    "Read the list of ssh keywords, returning them as a list."
     ;; (message "ssh-config-read-keywords")
     (let ((file-path
            (or file-path
-               (concat
-                (file-name-as-directory ssh-config-load-file-dir)
-                "ssh-config-keywords.txt"))))
+               (ssh-config-ssh-config-keywords-path))))
       (with-temp-buffer
         (insert-file-contents file-path)
         (split-string (buffer-string) "\n" t)))))
@@ -175,9 +176,9 @@ Comments right above a 'Host' are considered to be about that Host.
     (setq ssh-config-mode-syntax-table table)))
 
 (defvar ssh-config-imenu-generic-expression
-  `(("Hosts" 
+  `(("Hosts"
      ,(concat ssh-config-host-regexp "\\s-+\\(" ssh-config-hostname-regexp "\\)") 1)
-    ("Matches" 
+    ("Matches"
      ,(concat ssh-config-match-regexp "\\s-+\\(.*\\)") 1))
   "Value for `imenu-generic-expression' in `ssh-config-mode'.
 Only show the first hostname in the menu.")

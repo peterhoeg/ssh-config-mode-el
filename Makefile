@@ -55,6 +55,11 @@ _dist_clean: _clean
 
 ###
 
+_test_pkg_install:
+	cd tests/pkg-install && make ${@}
+
+###
+
 NEW_TAG ?= $(shell date +%Y%m%dT%H%M)
 
 _update_tag:
