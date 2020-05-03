@@ -73,9 +73,13 @@ _update_tag:
 _emacs_version:
 	emacs --version
 
+_printenv:
+	printenv | sort
+
 junit=@echo -e ${1} >> junit.xml.tmp
 
-_circleci_junit: _checkdoc_batch
+# Fake a successful run.
+_circleci_junit_ok: _checkdoc_batch
 	@echo -n "" > junit.xml.tmp
 	@$(call junit,"<?xml version='1.0' encoding='utf-8'?>")
 	@$(call junit,"<testsuite tests='1'>\n<testcase classname='checkdoc' name='checkdoc'>")
@@ -86,7 +90,11 @@ _circleci_junit: _checkdoc_batch
 	@$(call junit,"</system-err>\n</testcase>\n</testsuite>")
 	mv junit.xml.tmp junit.xml
 
-_printenv:
-	printenv | sort
+_circleci_run+=_clean 
+_circleci_run+=_printenv 
+_circleci_run+=_emacs_version
+_circleci_run+=_byte_compile
+_circleci_run+=_test_pkg_install
+_circleci_run+=_circleci_junit_ok
 
-_circleci_run: _clean _printenv _emacs_version _byte_compile _circleci_junit
+_circleci_run: ${_circleci_run}

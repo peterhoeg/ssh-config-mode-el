@@ -2,7 +2,8 @@ version: 2
 jobs:
   build:
     docker:
-      - image: ubuntu:18.10
+      - image: ubuntu:20.04
+
     steps:
 
       # prep the system
@@ -12,10 +13,10 @@ jobs:
 
       - run:
           name: "apt-get update"
-          command: "apt-get update"
+          command: "DEBIAN_FRONTEND=noninteractive apt-get update"
       - run:
           name: "apt-get install"
-          command: "apt-get install -y ca-certificates emacs-nox make wget ssh git curl"
+          command: "DEBIAN_FRONTEND=noninteractive apt-get install -y ca-certificates emacs-nox make wget ssh git curl"
 
       - restore_cache:
           keys:
