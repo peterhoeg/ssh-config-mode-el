@@ -146,7 +146,7 @@ Comments right above a 'Host' are considered to be about that Host."
       0)
      ;; Comment line
      ((looking-at "\\s-*#")
-      ;; comments right before a "Host"" should be at 0
+      ;; comments right before a "Host" or "Match" should be at 0
       (while (looking-at "\\s-*#")
         (forward-line))
       (if (or (looking-at ssh-config-host-regexp)
