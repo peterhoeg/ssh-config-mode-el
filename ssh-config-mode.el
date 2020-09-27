@@ -127,22 +127,30 @@ ssh_config(5) shows it as."
   (save-excursion
     (search-backward-regexp ssh-config-host-regexp nil t)))
 
+(defun ssh-config-in-match-block-p ()
+  "Are we inside a Match block?"
+  (save-excursion
+    (search-backward-regexp ssh-config-match-regexp nil t)))
+
 (defun ssh-config-compute-indent ()
   "Compute the target indent for the current line.
 Comments right above a 'Host' are considered to be about that Host."
   (save-excursion
     (beginning-of-line)
     (cond
-     ;; Start of file and "Host" should be at 0
+     ;; Start of file and "Host" and "Match" should be at 0
      ((or (looking-at ssh-config-host-regexp)
-          (not (ssh-config-in-host-block-p)))
+	  (looking-at ssh-config-match-regexp)
+          (and (not (ssh-config-in-host-block-p))
+	       (not (ssh-config-in-match-block-p))))
       0)
      ;; Comment line
      ((looking-at "\\s-*#")
-      ;; comments right before a "Host"" should be at 0
+      ;; comments right before a "Host" or "Match" should be at 0
       (while (looking-at "\\s-*#")
         (forward-line))
-      (if (looking-at ssh-config-host-regexp)
+      (if (or (looking-at ssh-config-host-regexp)
+	      (looking-at ssh-config-match-regexp))
         0
         ssh-config-mode-indent))
      ;; default.
