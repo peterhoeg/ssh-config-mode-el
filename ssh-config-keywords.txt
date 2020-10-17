@@ -57,6 +57,7 @@ LocalCommand
 LocalForward
 LogFacility
 LogLevel
+LogVerbose
 Macs
 Match
 NoHostAuthenticationForLocalhost
