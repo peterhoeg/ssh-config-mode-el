@@ -51,6 +51,8 @@
 ;; We use eval-and-compile so we can use them at compile
 ;; time and call regexp-opt during compliation.
 
+(require 'conf-mode)
+
 (eval-and-compile
   (defun ssh-config-ssh-config-keywords-path ()
     "Find the path to 'ssh-config-keywords.txt'.
@@ -191,17 +193,13 @@ Comments right above a 'Host' are considered to be about that Host."
 Only show the first hostname in the menu.")
 
 ;;;###autoload
-(defun ssh-config-mode ()
+(define-derived-mode ssh-config-mode conf-mode "ssh-config"
   "Major mode for fontifiying ssh config files.
 
 \\{ssh-config-mode-map}"
-  (interactive)
-  ;;
   (kill-all-local-variables)
   (set-syntax-table ssh-config-mode-syntax-table)
-  (setq mode-name "ssh-config"
-        major-mode 'ssh-config-mode
-        comment-start "#"
+  (setq comment-start "#"
         comment-end   "")
   (use-local-map ssh-config-mode-map)
   ;;
