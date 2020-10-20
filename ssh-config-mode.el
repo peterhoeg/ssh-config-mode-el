@@ -197,7 +197,6 @@ Only show the first hostname in the menu.")
   "Major mode for fontifiying ssh config files.
 
 \\{ssh-config-mode-map}"
-  (kill-all-local-variables)
   (set-syntax-table ssh-config-mode-syntax-table)
   (setq comment-start "#"
         comment-end   "")
