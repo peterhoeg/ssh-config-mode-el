@@ -244,7 +244,7 @@ Only show the first hostname in the menu.")
        ;; ( # hostnames
        ;;     (?:
        ;;         (?: # - on standard port
-       ;;             [\.\-\?\*a-zA-Z0-9]+
+       ;;             [\.\-:\?\*a-zA-Z0-9]+
        ;;             | # - on non-standard port with brackets
        ;;             \[ [\.\-\?\*a-zA-Z0-9]+ \]:\d{1,5}
        ;;         )
@@ -272,7 +272,7 @@ Only show the first hostname in the menu.")
        "\\(?:" ;; match multiple names
        "\\(?:"
        ;; - on standard port
-       "[-*.?[:word:]]+"
+       "[-:*.?[:word:]]+"
        "\\|"
        ;; - on non-standard port with brackets
        "\\[[-*.?[:word:]]+]:[[:digit:]]\\{1,5\\}"
