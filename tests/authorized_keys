@@ -1,0 +1,12 @@
+#
+# ssh-config-mode-el/tests/authorized_keys ---
+#
+
+# good lines
+ssh-rsa AAbase64
+ssh-rsa AAbase64base64base64base64base64base64base64base64base64 comment
+ssh-rsa AAbase64base64base64base64base64base64base64base64==     comment
+
+# bad (un-fonted) lines
+ssh-rsa
+ssh-rsa AAbase64base64base64==equalsinmiddle== comment

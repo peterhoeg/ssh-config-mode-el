@@ -232,76 +232,49 @@ Only show the first hostname in the menu.")
     map)
   "The local keymap for `ssh-known-hosts-mode'.")
 
+(defvar ssh-known-hosts-mode-syntax-table
+  (let ((table (make-syntax-table)))
+    (modify-syntax-entry ?# "<" table)
+    (modify-syntax-entry ?\n ">" table)
+    table)
+  "Syntax table for `ssh-known-hosts-mode'.
+Just sets the comment syntax.")
+
+;; NOTE: font-lock-studio might be of help when making changes.
 (defvar ssh-known-hosts-font-lock-keywords
-  ;; how to put eval-when-compile without recursive require?
-  `((,(concat
-
-       ;; The below is translated from this PCRE-compatible regex
-       ;; /(?x)
-
-       ;; ^
-       ;; # marker (optional)
-       ;; (@cert-authority|@revoked)?
-       ;; \s*
-
-       ;; ( # hostnames
-       ;;     (?:
-       ;;         (?: # - on standard port
-       ;;             [\.\-\?\*a-zA-Z0-9]+
-       ;;             | # - on non-standard port with brackets
-       ;;             \[ [\.\-\?\*a-zA-Z0-9]+ \]:\d{1,5}
-       ;;         )
-       ;;         (?:\b|,)?
-       ;;     )+
-       ;; )
-       ;; \s+
-       ;; ( # key type
-       ;;     (?:ssh|ecdsa)[\-a-zA-Z0-9]+\b
-       ;; )
-       ;; \s+
-       ;; ( # public key
-       ;;     AAAA[0-9A-Za-z\/\+]+
-       ;;     [=]{0,3}
-       ;; )
-       ;; /
-
+  ;; We want to match lines like the following:
+  ;; Short list in ./tests/known_hosts_short
+  ;; Full list in ./tests/known_hosts
+  `(
+    (,(concat
        "^"
-       ;; marker (optional)
-       "\\(\\(?:@\\(?:cert-authority\\|revoked\\)\\)\\|\\)"
-       "[[:blank:]]*"
+       ;; @marker (optional):
+       "\\(@[-a-z]+ +\\|\\)"
 
-       ;; hostnames
+       ;; hostnames & hashes:
+       ;; host.example.com,1.1.1.1
+       ;; |1|hash|hash|
+       ;; Just checking for chars, not parsing it.
        "\\("
-       "\\(?:" ;; match multiple names
-       "\\(?:"
-       ;; - on standard port
-       "[-*.?[:word:]]+"
-       "\\|"
-       ;; - on non-standard port with brackets
-       "\\[[-*.?[:word:]]+]:[[:digit:]]\\{1,5\\}"
+       "[-0-9A-Za-z|=.,:*/+]+"
        "\\)"
-       "\\(?:,\\|\\b\\)?" ;; separated by commas
-       "\\)+"
-       "\\)"
-       "[[:blank:]]+"
+       "[ \t]+"
 
-       ;; key type
-       "\\(\\(?:ecdsa\\|ssh\\)[-[:word:]]+\\b\\)"
-       "[[:blank:]]+"
+       ;; key type:
+       ;; ssh-rsa, ecdsa-sha2-nistp384, ...
+       "\\(\\(?:ecdsa\\|ssh\\)[-0-9A-Za-z]*\\)"
+       "[ \t]+"
 
-       ;; public key
-       "\\(AAAA[+/[:word:]]+=\\{0,3\\}\\)"
+       ;; public key:
+       ;; base64data==
+       "\\(AA[0-9A-Za-z/+]+=*\\)"
        )
      (1 font-lock-warning-face)
      (2 font-lock-function-name-face)
      (3 font-lock-keyword-face)
      (4 font-lock-string-face)
-     )
-    ("^[[:space:]]*\\(#.*\\)"
-     (1 font-lock-comment-face))
-    )
+     ))
   "Expressions to hilight in `ssh-known-hosts-mode'.")
-;; ssh-known-hosts-font-lock-keywords
 
 ;;;###autoload
 (defun ssh-known-hosts-mode ()
@@ -309,10 +282,12 @@ Only show the first hostname in the menu.")
 \\{ssh-known-hosts-mode}"
   (interactive)
   (kill-all-local-variables)
-  (setq mode-name "ssh-known-hosts"
-        major-mode 'ssh-known-hosts-mode
-        comment-start "#"
-        comment-end   "")
+  (set-syntax-table ssh-known-hosts-mode-syntax-table)
+  (setq
+   mode-name "ssh-known-hosts"
+   major-mode 'ssh-known-hosts-mode
+   comment-start "#"
+   comment-end   "")
   (use-local-map ssh-known-hosts-mode-map)
   ;;
   (make-local-variable 'font-lock-defaults)
@@ -336,13 +311,12 @@ Only show the first hostname in the menu.")
        ;; key type
        "\\(\\(?:ecdsa\\|ssh\\)-[^[:space:]]+\\)\\s-+"
        ;; base64
-       "\\([^[:space:]\n]+\\)"
+       "\\([0-9A-Za-z+/]+=*\\)"
        ;; comment in public key
        "\\(?: \\(.*\\)\\)?"
        "$")
       '(1 font-lock-keyword-face)
-      ;; not fontify like known_hosts
-      ;; '(2 font-lock-variable-name-face)
+      '(2 font-lock-string-face)
       '(3 font-lock-comment-face nil t)
       )))
   ;; Not define `auto-mode-alist' obey the other mode in this elisp.

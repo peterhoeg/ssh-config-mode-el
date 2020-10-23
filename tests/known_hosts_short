@@ -1,0 +1,28 @@
+#
+# ssh-config-mode-el/tests/known_hosts_short ---
+#
+# Short known_hosts file for testing. 
+#
+# (load-file "./ssh-config-test-helper-funcs.el")
+# (ssh-known-hosts-mode-reload)
+#
+
+# good (fontified) lines
+host.example.com ssh-rsa AAAABBBBCCCCDDDD
+host.example.com,1.1.1.1 ecdsa-sha2-nistp384 AAAABBBBCCCCDDDD==
+host.example.com,1234::abcd ssh-rsa AAAABBBBCCCCDDDD  extra-data # comment
+|1|abcdefghijk=|lmnopqrstuxyz= ssh-rsa AAAABBBBCCCCDDDD
+@revoked host.example.com ssh-rsa AAAABBBBCCCCDDDD
+@cert-authority host.example.com ssh-rsa AAAABBBBCCCCDDDD
+
+##### bad (unfontifined) lines.
+@revoked
+@revoked  xx
+bad.line.com
+bad.line.com foo-rsa AAAABBBBCCCCDDDD
+bad.line.com ssh-foo AAAABBBBCC==equalsinmiddle==
+@whoa! host.example.com ssh-rsa AAAABBBBCCCCDDDD
+
+# Local Variables:
+# mode: ssh-known-hosts
+# End:
