@@ -168,8 +168,12 @@ Comments right above a 'Host' are considered to be about that Host."
 (defvar ssh-config-mode-map
   (let ((map (make-sparse-keymap)))
     ;; Ctrl bindings
-    (define-key map [C-up]      'ssh-config-host-prev)
     (define-key map [C-down]    'ssh-config-host-next)
+    (define-key map [C-up]      'ssh-config-host-prev)
+    ;;
+    (define-key map "\C-c}"     'ssh-config-host-next)
+    (define-key map "\C-c{"     'ssh-config-host-prev)
+    ;;
     (define-key map (kbd "TAB") 'indent-for-tab-command)
     map)
   "The local keymap for `ssh-config-mode'.")
@@ -191,27 +195,22 @@ Comments right above a 'Host' are considered to be about that Host."
 Only show the first hostname in the menu.")
 
 ;;;###autoload
-(defun ssh-config-mode ()
+(define-derived-mode ssh-config-mode
+  fundamental-mode
+  "ssh-config"
   "Major mode for fontifiying ssh config files.
 
 \\{ssh-config-mode-map}"
-  (interactive)
-  ;;
-  (kill-all-local-variables)
-  (set-syntax-table ssh-config-mode-syntax-table)
-  (setq mode-name "ssh-config"
-        major-mode 'ssh-config-mode
-        comment-start "#"
-        comment-end   "")
-  (use-local-map ssh-config-mode-map)
-  ;;
+  (setq
+   comment-start "#"
+   comment-end   "")
   (make-local-variable 'font-lock-defaults)
-  (setq font-lock-defaults '(ssh-config-font-lock-keywords nil t))
+  (setq
+   font-lock-defaults '(ssh-config-font-lock-keywords nil t))
   ;;
-  (setq-local indent-line-function 'ssh-config-indent-line)
-  (setq-local imenu-generic-expression ssh-config-imenu-generic-expression)
-  ;;
-  (run-hooks 'ssh-config-mode-hook)
+  (setq-local
+   indent-line-function 'ssh-config-indent-line
+   imenu-generic-expression ssh-config-imenu-generic-expression)
   nil)
 
 ;;;###autoload
