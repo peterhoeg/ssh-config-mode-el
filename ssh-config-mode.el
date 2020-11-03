@@ -208,10 +208,8 @@ Only show the first hostname in the menu.")
   (setq
    font-lock-defaults '(ssh-config-font-lock-keywords nil t))
   ;;
-  (setq-local
-   indent-line-function 'ssh-config-indent-line
-   imenu-generic-expression ssh-config-imenu-generic-expression)
-  nil)
+  (setq-local indent-line-function 'ssh-config-indent-line)
+  (setq-local imenu-generic-expression ssh-config-imenu-generic-expression))
 
 ;;;###autoload
 (progn
