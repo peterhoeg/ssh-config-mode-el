@@ -13,7 +13,7 @@ _default: _test_pkg_install
 # - wget http://www.melpa.org/packages/archive-contents
 # - wget http://www.melpa.org/packages/ssh-config-mode-20191221.1051.tar
 
-# use "gtar" if found.
+# use "gtar" if found (for OSX)
 tar_exe=$(word 1,$(shell type -p gtar) $(shell type -p tar))
 
 # This is our bogus package for testing.

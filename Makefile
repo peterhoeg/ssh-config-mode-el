@@ -4,12 +4,22 @@
 # $Id: Makefile,v 1.2 2011/11/26 22:43:18 harley Exp $
 #
 
-SHELL:=bash
+SHELL:=/bin/bash
+SUFFIXES:
 
-###
+_default: _byte_compile
+
+#####
+
+# figure you will have emacs already... =)
+_brew_install:
+	brew install \
+	  gnu-tar \
+	  python3
+
+#####
 
 EL:=ssh-config-mode.el
-_default: _byte_compile
 
 _byte_compile:
 	-rm *.elc
@@ -72,6 +82,32 @@ _update_tag:
 
 ###
 
+python_files+=./get-keywords/get-keywords
+
+_isort:
+	isort \
+	  --multi-line 3 \
+	  --trailing-comma \
+	  --line-width 1 \
+	  ${python_files}
+
+_autopep8:
+	autopep8 \
+	  --aggressive \
+	  --in-place \
+	  --max-line-length 120 \
+	  ${python_files}
+
+_precommit+=_isort
+_precommit+=_autopep8
+_precommit+=_byte_compile
+_precommit+=_test_pkg_install
+_precommit+=_checkdoc_batch
+
+_precommit: ${_precommit}
+
+###
+
 _emacs_version:
 	emacs --version
 
@@ -92,8 +128,8 @@ _circleci_junit_ok: _checkdoc_batch
 	@$(call junit,"</system-err>\n</testcase>\n</testsuite>")
 	mv junit.xml.tmp junit.xml
 
-_circleci_run+=_clean 
-_circleci_run+=_printenv 
+_circleci_run+=_clean
+_circleci_run+=_printenv
 _circleci_run+=_emacs_version
 _circleci_run+=_byte_compile
 _circleci_run+=_test_pkg_install
