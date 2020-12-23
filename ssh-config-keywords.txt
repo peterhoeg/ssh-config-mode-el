@@ -53,6 +53,7 @@ Include
 KbdInteractiveAuthentication
 KbdInteractiveDevices
 KexAlgorithms
+KnownHostsCommand
 LocalCommand
 LocalForward
 LogFacility
