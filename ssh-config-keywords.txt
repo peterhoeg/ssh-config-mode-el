@@ -71,7 +71,7 @@ PreferredAuthentications
 ProxyCommand
 ProxyJump
 ProxyUseFdpass
-PubkeyAcceptedKeyTypes
+PubkeyAcceptedAlgorithms
 PubkeyAuthentication
 RekeyLimit
 RemoteCommand
