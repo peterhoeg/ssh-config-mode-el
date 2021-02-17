@@ -66,6 +66,7 @@ NumberOfPasswordPrompts
 PKCS11Provider
 PasswordAuthentication
 PermitLocalCommand
+PermitRemoteOpen
 Port
 PreferredAuthentications
 ProxyCommand
