@@ -65,3 +65,4 @@ Contributors
 - iory
 - Александар Симић
 - Andrew Schwartzmeyer
+- Eder Elorriaga
