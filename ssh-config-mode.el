@@ -194,6 +194,15 @@ Comments right above a 'Host' are considered to be about that Host."
   "Value for `imenu-generic-expression' in `ssh-config-mode'.
 Only show the first hostname in the menu.")
 
+(defun ssh-config-completion-at-point ()
+  "Function used for `completion-at-point-functions' in `ssh-config-mode'."
+  (interactive)
+  (let* (
+         (bds (bounds-of-thing-at-point 'symbol))
+         (start (car bds))
+         (end (cdr bds)))
+    (list start end ssh-config-keywords . nil )))
+
 ;;;###autoload
 (define-derived-mode ssh-config-mode
   fundamental-mode
@@ -209,7 +218,8 @@ Only show the first hostname in the menu.")
    font-lock-defaults '(ssh-config-font-lock-keywords nil t))
   ;;
   (setq-local indent-line-function 'ssh-config-indent-line)
-  (setq-local imenu-generic-expression ssh-config-imenu-generic-expression))
+  (setq-local imenu-generic-expression ssh-config-imenu-generic-expression)
+  (add-hook 'completion-at-point-functions 'ssh-config-completion-at-point nil 'local))
 
 ;;;###autoload
 (progn
