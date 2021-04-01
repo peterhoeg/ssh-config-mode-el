@@ -1,11 +1,9 @@
 #
-# ~/share/emacs/pkg/Makefile ---
-#
-# $Id: Makefile,v 1.2 2011/11/26 22:43:18 harley Exp $
+# ssh-config-mode-el/Makefile ---
 #
 
 SHELL:=/bin/bash
-SUFFIXES:
+.SUFFIXES:
 
 _default: _byte_compile
 
