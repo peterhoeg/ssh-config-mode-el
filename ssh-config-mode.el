@@ -259,11 +259,20 @@ Just sets the comment syntax.")
        "\\(@[-a-z]+ +\\|\\)"
 
        ;; hostnames & hashes:
-       ;; host.example.com,1.1.1.1
-       ;; |1|hash|hash|
        ;; Just checking for chars, not parsing it.
        "\\("
+       ;; host.example.com,1.1.1.1
+       ;; |1|hash|hash|
        "[-0-9A-Za-z|=.,:*/+]+"
+       "\\|"
+       ;; [136.24.83.19]:2222
+       "\\[[0-9]+.[0-9]+.[0-9]+.[0-9]+\\]:[0-9]+"
+       "\\|"
+       ;; fe80::3285:a9ff:fea7:6de3%en0
+       "[0-9a-f:]+\\(?:%[a-z0-9]+\\)?"
+       "\\|"
+       ;; [fe80::3285:a9ff:fea7:6de3%en0]:2222
+       "\\[[0-9a-f:]+\\(?:%[a-z0-9]+\\)?\\]:[0-9]+"
        "\\)"
        "[ \t]+"
 

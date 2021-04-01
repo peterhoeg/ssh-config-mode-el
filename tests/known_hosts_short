@@ -1,7 +1,7 @@
 #
 # ssh-config-mode-el/tests/known_hosts_short ---
 #
-# Short known_hosts file for testing. 
+# Short known_hosts file for testing.
 #
 # (load-file "./ssh-config-test-helper-funcs.el")
 # (ssh-known-hosts-mode-reload)
@@ -15,6 +15,13 @@ host.example.com,1234::abcd ssh-rsa AAAABBBBCCCCDDDD  extra-data # comment
 @revoked host.example.com ssh-rsa AAAABBBBCCCCDDDD
 @cert-authority host.example.com ssh-rsa AAAABBBBCCCCDDDD
 
+# ipv6
+fe80::3285:a9ff:fea7:6de3 ecdsa-sha2-nistp AAAABBBCCCCDDDD
+fe80::3285:a9ff:fea7:6de3%en0 ecdsa-sha2-nistp AAAABBBCCCCDDDD
+[fe80::3285:a9ff:fea7:6de3]:2222 ecdsa-sha2-nistp AAAABBBCCCCDDDD
+# ipv4 with port
+[136.24.83.19]:2222 ssh-rsa AAAABBBCCCCDDDD
+
 ##### bad (unfontifined) lines.
 @revoked
 @revoked  xx
@@ -22,6 +29,17 @@ bad.line.com
 bad.line.com foo-rsa AAAABBBBCCCCDDDD
 bad.line.com ssh-foo AAAABBBBCC==equalsinmiddle==
 @whoa! host.example.com ssh-rsa AAAABBBBCCCCDDDD
+
+# ipv4 with port misformatted
+[136.24.83.19] ssh-rsa AAAABBBCCCCDDDD
+[24.83.19]:222 ssh-rsa AAAABBBCCCCDDDD
+
+# ipv6
+zzzzz%abc ssh-rsa AAAABBBCCCCDDDD
+# spaces
+[fe80::3285:a9ff  :fea7:6de3]:2222 ecdsa-sha2-nistp AAAABBBCCCCDDDD
+# missing leading "["
+fe80::3285:a9ff:fea7:6de3]:2222 ecdsa-sha2-nistp AAAABBBCCCCDDDD
 
 # Local Variables:
 # mode: ssh-known-hosts
