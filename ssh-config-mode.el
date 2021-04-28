@@ -101,6 +101,7 @@ When testing add '.' to load-path so you find the local copy."
 (defvar ssh-config-match-regexp "^\\s-*Match\\b"
   "Regexp to match the start of a match entry.")
 
+;;
 (defvar ssh-config-hostname-regexp
   "[-_.a-zA-Z0-9]+"
   "Regexp to match one hostname.  (rfc1123 2.1).")
@@ -276,9 +277,9 @@ Just sets the comment syntax.")
   "\\(?:[0-9a-f:]+\\(?:%[a-z0-9]+\\)\\)"
   "Regex for matching ipv6 addresses.")
 
+;; This is more specfic than "ssh-config-hostname-regexp"; merge them?
 (defvar ssh-known-hosts-regex-hostname
-  ;;"\\(?:[a-zA-Z0-9.]*\\)"
-  "\\(?:\\(?:[a-zA-Z0-9_][-a-zA-Z0-9_]+[.]\\)*[a-zA-Z_][-a-zA-Z0-9_]*\\)"
+  "\\(?:\\(?:[a-zA-Z0-9_][-a-zA-Z0-9_]*[.]\\)*[a-zA-Z_][-a-zA-Z0-9_]*\\)"
   "Regex for matching hostnames.
 We permit underscores.")
 

@@ -19,6 +19,9 @@ host.example.com,1234::abcd ssh-rsa AAAABBBBCCCCDDDD  extra-data # comment
 laptop.local,fe80::1234:4567%en0 ecdsa-sha2-nistp384 AAAABBBBCCCCDDDD
 [localhost]:22222 ssh-rsa AAAABBBBCCCCDDDD
 [ssh.github.com]:443,[192.1.2.3]:443 ssh-rsa AAAABBBBCCCCDDDD
+# single character hostnames.
+a.z.github.com ssh-rsa AAAABBBBCCCCDDDD
+[a.z.github.com]:443,[192.1.2.3]:443 ssh-rsa AAAABBBBCCCCDDDD
 
 # ipv6
 fe80::3285:a9ff:fea7:6de3 ecdsa-sha2-nistp AAAABBBCCCCDDDD
