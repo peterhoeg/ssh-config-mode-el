@@ -9,7 +9,7 @@ _default: _update_keywords
 #####
 
 openssh-portable:
-	git clone git@github.com:openssh/openssh-portable.git ${@}
+	git clone "git@github.com:openssh/openssh-portable.git" ${@}
 
 _update_openssh: | openssh-portable
 	cd openssh-portable && \

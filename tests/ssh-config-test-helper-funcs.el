@@ -8,11 +8,22 @@ Reeval the ssh-config mode and reenable it."
   (interactive)
   ;; in case we crash
   (save-some-buffers)
+  ;; clean out old values
+  (dolist
+      (x
+       '(
+         ssh-known-hosts-font-lock-keywords
+         ssh-known-hosts-regex-hashed
+         ssh-known-hosts-regex-host
+         ssh-known-hosts-regex-hostname
+         ssh-known-hosts-regex-ip
+         ssh-known-hosts-regex-ipv4
+         ssh-known-hosts-regex-ipv6
+         ssh-known-hosts-regex-port))
+      (makunbound x))
   ;; reload the code.
-  (makunbound 'ssh-known-hosts-font-lock-keywords)
   (let ((buf (get-buffer "ssh-config-mode.el")))
-    (when buf
-      (eval-buffer buf)))
+    (eval-buffer buf))
   ;; reenable the mode.
   (fundamental-mode)
   (font-lock-mode 0)

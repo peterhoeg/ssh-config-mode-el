@@ -247,32 +247,97 @@ Only show the first hostname in the menu.")
   "Syntax table for `ssh-known-hosts-mode'.
 Just sets the comment syntax.")
 
+;;;;;
+
+;; host.example.com,1.1.1.1
+;; |1|hash=|hash=
+(defvar ssh-known-hosts-regex-hashed
+  "\\(?:|[0-9]+|[-0-9A-Za-z=|]+\\)"
+  "Regex for matching hashed addresses.")
+
+(defvar ssh-known-hosts-regex-ipv4
+  "\\(?:[0-9]+.[0-9]+.[0-9]+.[0-9]+\\)"
+  "Regex for matching ipv4 addresses.")
+
+(defvar ssh-known-hosts-regex-ipv6
+  "\\(?:[0-9a-f:]+\\(?:%[a-z0-9]+\\)?\\)"
+  "Regex for matching ipv6 addresses.")
+
+(defvar ssh-known-hosts-regex-ip
+  (concat
+   "\\(?:"
+   ssh-known-hosts-regex-ipv4
+   "\\|"
+   ssh-known-hosts-regex-ipv6
+   "\\)")
+  "Regex for matching ip addresses.")
+
+(defvar ssh-known-hosts-regex-ipv6
+  "\\(?:[0-9a-f:]+\\(?:%[a-z0-9]+\\)\\)"
+  "Regex for matching ipv6 addresses.")
+
+(defvar ssh-known-hosts-regex-hostname
+  ;;"\\(?:[a-zA-Z0-9.]*\\)"
+  "\\(?:\\(?:[a-zA-Z0-9_][-a-zA-Z0-9_]+[.]\\)*[a-zA-Z_][-a-zA-Z0-9_]*\\)"
+  "Regex for matching hostnames.
+We permit underscores.")
+
+;; :2222
+(defvar ssh-known-hosts-regex-port
+  "\\(?:[0-9]+\\)"
+  "Regex for matching an port.")
+
+(defvar ssh-known-hosts-regex-host
+  (concat
+   "\\(?:"
+   ssh-known-hosts-regex-hashed
+   "\\|"
+   ssh-known-hosts-regex-ip
+   "\\|"
+   ssh-known-hosts-regex-hostname
+   "\\)"))
+
 ;; NOTE: font-lock-studio might be of help when making changes.
 (defvar ssh-known-hosts-font-lock-keywords
   ;; We want to match lines like the following:
   ;; Short list in ./tests/known_hosts_short
   ;; Full list in ./tests/known_hosts
+  ;; More test data in: openssh-portable/regress/unittests/hostkeys/testdata/known_hosts
   `(
     (,(concat
        "^"
        ;; @marker (optional):
        "\\(@[-a-z]+ +\\|\\)"
 
-       ;; hostnames & hashes:
-       ;; Just checking for chars, not parsing it.
+       ;; hostname:
        "\\("
-       ;; host.example.com,1.1.1.1
-       ;; |1|hash|hash|
-       "[-0-9A-Za-z|=.,:*/+]+"
+
+       ;; |1|hash=|hash=
+       ssh-known-hosts-regex-hashed
        "\\|"
-       ;; [136.24.83.19]:2222
-       "\\[[0-9]+.[0-9]+.[0-9]+.[0-9]+\\]:[0-9]+"
+
+       ;; hostname-only
+       ssh-known-hosts-regex-hostname
        "\\|"
-       ;; fe80::3285:a9ff:fea7:6de3%en0
-       "[0-9a-f:]+\\(?:%[a-z0-9]+\\)?"
+
+       ;; ip-only
+       ssh-known-hosts-regex-ip
        "\\|"
-       ;; [fe80::3285:a9ff:fea7:6de3%en0]:2222
-       "\\[[0-9a-f:]+\\(?:%[a-z0-9]+\\)?\\]:[0-9]+"
+
+       ;; hostname "," ip
+       "\\(?:" ssh-known-hosts-regex-hostname "," ssh-known-hosts-regex-ip "\\)"
+       "\\|"
+
+       ;; [host-or-ip]:222
+       "\\(?:\\[" ssh-known-hosts-regex-host "\\]:" ssh-known-hosts-regex-port "\\)"
+       "\\|"
+
+       ;; We arent matching ports, but they should be the same.
+       ;; [ssh.github.com]:443,[192.1.2.3]:443
+       "\\(?:"
+       "\\[" ssh-known-hosts-regex-hostname "\\]:" ssh-known-hosts-regex-port ","
+       "\\[" ssh-known-hosts-regex-ip       "\\]:" ssh-known-hosts-regex-port "\\)"
+
        "\\)"
        "[ \t]+"
 
@@ -290,7 +355,9 @@ Just sets the comment syntax.")
      (3 font-lock-keyword-face)
      (4 font-lock-string-face)
      ))
-  "Expressions to hilight in `ssh-known-hosts-mode'.")
+  "Expressions to hilight in `ssh-known-hosts-mode'.
+We want to try and be a good match, so misformatted ones stand out.
+So we dont just match .* for the hostname.")
 
 ;;;###autoload
 (defun ssh-known-hosts-mode ()

@@ -7,13 +7,18 @@
 # (ssh-known-hosts-mode-reload)
 #
 
-# good (fontified) lines
+##### good lines. (all should be fontified)
+
+localhost ssh-rsa AAAABBBBCCCCDDDD
 host.example.com ssh-rsa AAAABBBBCCCCDDDD
 host.example.com,1.1.1.1 ecdsa-sha2-nistp384 AAAABBBBCCCCDDDD==
 host.example.com,1234::abcd ssh-rsa AAAABBBBCCCCDDDD  extra-data # comment
 |1|abcdefghijk=|lmnopqrstuxyz= ssh-rsa AAAABBBBCCCCDDDD
 @revoked host.example.com ssh-rsa AAAABBBBCCCCDDDD
 @cert-authority host.example.com ssh-rsa AAAABBBBCCCCDDDD
+laptop.local,fe80::1234:4567%en0 ecdsa-sha2-nistp384 AAAABBBBCCCCDDDD
+[localhost]:22222 ssh-rsa AAAABBBBCCCCDDDD
+[ssh.github.com]:443,[192.1.2.3]:443 ssh-rsa AAAABBBBCCCCDDDD
 
 # ipv6
 fe80::3285:a9ff:fea7:6de3 ecdsa-sha2-nistp AAAABBBCCCCDDDD
@@ -22,19 +27,46 @@ fe80::3285:a9ff:fea7:6de3%en0 ecdsa-sha2-nistp AAAABBBCCCCDDDD
 # ipv4 with port
 [136.24.83.19]:2222 ssh-rsa AAAABBBCCCCDDDD
 
-##### bad (unfontifined) lines.
+##### bad lines (none should be fontified)
+
 @revoked
 @revoked  xx
 bad.line.com
+@whoa! host.example.com ssh-rsa AAAABBBBCCCCDDDD
+
+# foo-rsa
 bad.line.com foo-rsa AAAABBBBCCCCDDDD
 bad.line.com ssh-foo AAAABBBBCC==equalsinmiddle==
-@whoa! host.example.com ssh-rsa AAAABBBBCCCCDDDD
+
+# messed up ipv4
+1.2.3 ssh-foo AAAABBBBCCC
+1.2.3. ssh-foo AAAABBBBCCC
+1.2.3.4. ssh-foo AAAABBBBCCC
+
+# ip-then-host
+1.2.3.4,host.example.com ssh-foo AAAABBBBCCC
 
 # ipv4 with port misformatted
 [136.24.83.19] ssh-rsa AAAABBBCCCCDDDD
+# partial-ipv4
 [24.83.19]:222 ssh-rsa AAAABBBCCCCDDDD
 
-# ipv6
+# bad hashes
+||abcdefghijk=|lmnopqrstuxyz= ssh-rsa AAAABBBBCCCCDDDD
+1|abcdefghijk=|lmnopqrstuxyz= ssh-rsa AAAABBBBCCCCDDDD
+
+# pair with items missing
+[]:443,[192.1.2.3]:443 ssh-rsa AAAABBBBCCCCDDDD
+[ssh.github.com]:443,[]:443 ssh-rsa AAAABBBBCCCCDDDD
+# pair with port missing
+[ssh.github.com]:,[192.1.2.3]:443 ssh-rsa AAAABBBBCCCCDDDD
+[ssh.github.com]:443,[192.1.2.3]: ssh-rsa AAAABBBBCCCCDDDD
+
+# extra space
+[ssh.github.com]:443, [192.1.2.3]:443 ssh-rsa AAAABBBBCCCCDDDD
+[ssh.github.com]:443 ,[192.1.2.3]:443 ssh-rsa AAAABBBBCCCCDDDD
+
+# bad ipv6
 zzzzz%abc ssh-rsa AAAABBBCCCCDDDD
 # spaces
 [fe80::3285:a9ff  :fea7:6de3]:2222 ecdsa-sha2-nistp AAAABBBCCCCDDDD
