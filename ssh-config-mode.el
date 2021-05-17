@@ -253,7 +253,7 @@ Just sets the comment syntax.")
 ;; host.example.com,1.1.1.1
 ;; |1|hash=|hash=
 (defvar ssh-known-hosts-regex-hashed
-  "\\(?:|[0-9]+|[-0-9A-Za-z=|]+\\)"
+  "\\(?:|[0-9]+|[-0-9A-Za-z=|/+]+\\)"
   "Regex for matching hashed addresses.")
 
 (defvar ssh-known-hosts-regex-ipv4

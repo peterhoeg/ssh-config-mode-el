@@ -9,16 +9,16 @@
 
 ##### good lines. (all should be fontified)
 
-localhost ssh-rsa AAAABBBBCCCCDDDD
-host.example.com ssh-rsa AAAABBBBCCCCDDDD
-host.example.com,1.1.1.1 ecdsa-sha2-nistp384 AAAABBBBCCCCDDDD==
-host.example.com,1234::abcd ssh-rsa AAAABBBBCCCCDDDD  extra-data # comment
-|1|abcdefghijk=|lmnopqrstuxyz= ssh-rsa AAAABBBBCCCCDDDD
-@revoked host.example.com ssh-rsa AAAABBBBCCCCDDDD
-@cert-authority host.example.com ssh-rsa AAAABBBBCCCCDDDD
-laptop.local,fe80::1234:4567%en0 ecdsa-sha2-nistp384 AAAABBBBCCCCDDDD
-[localhost]:22222 ssh-rsa AAAABBBBCCCCDDDD
-[ssh.github.com]:443,[192.1.2.3]:443 ssh-rsa AAAABBBBCCCCDDDD
+localhost ssh-rsa AAAABBBBCCCC/+DDDD
+host.example.com ssh-rsa AAAABBBBCCCC/+DDDD
+host.example.com,1.1.1.1 ecdsa-sha2-nistp384 AAAABBBBCCCC/+DDDD==
+host.example.com,1234::abcd ssh-rsa AAAABBBBCCCC/+DDDD  extra-data # comment
+|1|abcd/+efghijk=|lmnopqr/+stuxyz= ssh-rsa AAAABBBBCCCC/+DDDD
+@revoked host.example.com ssh-rsa AAAABBBBCCCC/+DDDD
+@cert-authority host.example.com ssh-rsa AAAABBBBCCCC/+DDDD
+laptop.local,fe80::1234:4567%en0 ecdsa-sha2-nistp384 AAAABBBBCCCC/+DDDD
+[localhost]:22222 ssh-rsa AAAABBBBCCCC/+DDDD
+[ssh.github.com]:443,[192.1.2.3]:443 ssh-rsa AAAABBBBCCCC/+DDDD==
 # single character hostnames.
 a.z.github.com ssh-rsa AAAABBBBCCCCDDDD
 [a.z.github.com]:443,[192.1.2.3]:443 ssh-rsa AAAABBBBCCCCDDDD
