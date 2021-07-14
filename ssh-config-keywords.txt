@@ -82,6 +82,7 @@ SecurityKeyProvider
 SendEnv
 ServerAliveCountMax
 ServerAliveInterval
+SessionType
 SetEnv
 StreamLocalBindMask
 StreamLocalBindUnlink
