@@ -1,0 +1,90 @@
+#
+# ssh-config-mode-el/.github/workflows/10-run-tests.yml ---
+#
+# Runs our (very simple) tests.
+
+name: 01-run-tests
+on:
+  - push
+
+defaults:
+  run:
+    shell: bash
+
+env:
+  DEBIAN_FRONTEND: noninteractive
+
+jobs:
+
+  run-tests:
+    runs-on: ubuntu-latest
+
+    steps:
+
+      - name: Git checkout
+        uses: actions/checkout@v2
+
+      # The cache unpacking runs as the user, allow us to write.
+      - name: Chmod /var/cache/apt/archives
+        run: |
+          sudo chmod a+w /var/cache/apt/archives/.
+
+      - name: Cache apt pkgs
+        id: cache-apt-pkgs
+        uses: actions/cache@v2
+        with:
+          key: cache-apt-pkgs
+          # -${{ github.sha }}
+          restore-keys: |
+            cache-apt-pkgs
+          path: |
+            /var/cache/apt/archives/*.deb
+
+      - name: apt-get install
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y \
+            ca-certificates \
+            curl \
+            emacs-nox \
+            git \
+            make \
+            ssh \
+            wget
+
+      - name: Cache checkdoc
+        id: cache-checkdoc-batch
+        uses: actions/cache@v2
+        with:
+          key: cache-checkdoc-batch
+          path: |
+            ./checkdoc-batch.el
+
+      - name: Fetch checkdoc-batch.el
+        if: steps.cache-checkdoc-batch.outputs.cache-hit != 'true'
+        run: |
+          make checkdoc-batch.el
+
+      - name: Run tests
+        run: |
+          cd ${GITHUB_WORKSPACE}
+          make _circleci_run
+
+      - name: Date
+        id: date
+        run: |
+          echo "::set-output name=date::$(date +%Y%m%dT%H%M)"
+
+      # Currently we have to download the zip to see them.
+      # This might change in the future.
+      # https://github.com/actions/upload-artifact/issues/14
+      - name: Artifacts
+        uses: actions/upload-artifact@v2
+        if: ${{ always() }}
+        with:
+          name: ssh-config-mode-el-artifacts-${{ github.run_number }}-${{steps.date.outputs.date}}
+          if-no-files-found: error
+          path: |
+            checkdoc.stderr
+            checkdoc.stdout
+            junit.xml

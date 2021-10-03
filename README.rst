@@ -4,8 +4,8 @@ ssh-config-mode-el/README
 .. image:: https://melpa.org/packages/ssh-config-mode-badge.svg
    :target: https://melpa.org/#/ssh-config-mode
 
-.. image:: https://circleci.com/gh/jhgorrell/ssh-config-mode-el.svg?style=svg
-   :target: https://circleci.com/gh/jhgorrell/ssh-config-mode-el
+.. image:: https://github.com/jhgorrell/ssh-config-mode-el/actions/workflows/10-run-tests.yml/badge.svg
+   :target: https://github.com/jhgorrell/ssh-config-mode-el/actions/workflows/10-run-tests.yml
 
 A mode to edit SSH config files.
 
