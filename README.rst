@@ -39,8 +39,6 @@ Links
 ----------------------------------------
 
 - https://github.com/jhgorrell/ssh-config-mode-el
-- https://gitlab.com/jhgorrell/ssh-config-mode-el
-- https://circleci.com/gh/jhgorrell/ssh-config-mode-el
 - https://github.com/openssh/openssh-portable
 
 
@@ -66,3 +64,4 @@ Contributors
 - Александар Симић
 - Andrew Schwartzmeyer
 - Eder Elorriaga
+- Ville Skyttä

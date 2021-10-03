@@ -5,10 +5,10 @@
 ;; $Id: ssh-config-mode.el,v 1.14 2012/05/14 05:29:26 harley Exp $
 ;;
 
+;; SPDX-License-Identifier: GPL v3+ (https://www.gnu.org/licenses/gpl-3.0.txt)
 ;; Author:    Harley Gorrell <harley@panix.com>
 ;; URL:       https://github.com/jhgorrell/ssh-config-mode-el
 ;; Github:    https://raw.github.com/jhgorrell/ssh-config-mode-el/master/ssh-config-mode.el
-;; License:   GPL v3+ (https://www.gnu.org/licenses/gpl-3.0.txt)
 ;; Keywords:  ssh, config, emacs
 ;; Version:   $Revision: 1.14 $
 ;; Tag:       20170413T0010
