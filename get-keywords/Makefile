@@ -16,7 +16,19 @@ _update_openssh: | openssh-portable
 	  git pull
 
 _get_keywords: | openssh-portable
-	./get-keywords openssh-portable/readconf.c > keywords.txt
+#
+	rm -f ./keywords.txt
+#
+	./get-keywords \
+	   --output-file ./keywords.txt \
+	  ./openssh-portable/readconf.c
 	mv keywords.txt ../ssh-config-keywords.txt
 
 _update_keywords: _update_openssh _get_keywords
+
+#####
+
+_get_keywords_debug:
+	./get-keywords \
+	  --debug \
+	  ./openssh-portable/readconf.c

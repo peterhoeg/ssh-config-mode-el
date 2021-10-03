@@ -1,6 +1,7 @@
 ;;
 ;; ssh-config-mode-el/tests/ssh-config-test-helper-funcs.el ---
 ;;
+;; (load-file "ssh-config-test-helper-funcs.el")
 
 (defun ssh-known-hosts-mode-reload ()
   "A helper for testing ssh-known-hosts-mode in a buffer.

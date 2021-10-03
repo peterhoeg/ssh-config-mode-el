@@ -1,6 +1,7 @@
 #
 # ssh-config-mode-el/tests/config ---
 #
+# (load-file "./ssh-config-test-helper-funcs.el")
 
 Host a.example.com a
   HostName 1.2.3.1

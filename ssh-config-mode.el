@@ -215,8 +215,11 @@ Only show the first hostname in the menu.")
    comment-start "#"
    comment-end   "")
   (make-local-variable 'font-lock-defaults)
+  (make-local-variable 'font-lock-keywords-case-fold-search)
   (setq
-   font-lock-defaults '(ssh-config-font-lock-keywords nil t))
+   font-lock-defaults '(ssh-config-font-lock-keywords nil t)
+   ;; cause our keywords are all lower case.
+   font-lock-keywords-case-fold-search t)
   ;;
   (setq-local indent-line-function 'ssh-config-indent-line)
   (setq-local imenu-generic-expression ssh-config-imenu-generic-expression)

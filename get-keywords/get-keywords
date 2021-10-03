@@ -2,8 +2,12 @@
 #
 # ssh-config-mode-el/get-keywords/get-keywords ---
 #
+# Extracts the list of keywords from "readconf.c"
+#
+# A better method would be to compile "readconf.c"
+# into a python module and then grab the list from that.
+# Using a regex works well enough for now.
 
-# 1/2 => 0.5  1//2 => 0
 from __future__ import (
     absolute_import,
     division,
@@ -25,6 +29,25 @@ VERSION = ''
 
 #####
 
+# We want to match lines which look like this:
+#
+# { "userknownhostsfile2", oDeprecated },
+# { "gssapiauthentication", oGssAuthentication },
+#
+# Skip the "oDeprecated" ones, but keep "oUnsupported".
+# As they are still active, but compile time options.
+
+#: Regex to match conf options from "readconf.c"
+KEYWORD_RE = re.compile(
+    " *{ *\"(?P<name>[a-z0-9]+)\" *, *(?P<opcode>o[a-z0-9]*) *}",
+    re.IGNORECASE)
+
+#: List of opcodes which shouldnt be included in the keyword list.
+OPCODES_IGNORE = [
+    "oDeprecated",
+    "oUnsupported",
+]
+
 
 def main(raw_args):
     global DEBUG, VERBOSE, VERSION
@@ -42,17 +65,15 @@ EXAMPLES:
     g = parser.add_argument_group('GENERAL')
     g.add_argument("--debug", "-d",
                    action="store_true",
-                   help="Turn on the debugging flag.")
+                   help=argparse.SUPPRESS)
     g.add_argument("--pdb",
                    action="store_true",
-                   help="Enter the debugger after reading args.")
+                   help=argparse.SUPPRESS)
     g.add_argument("--verbose", "-v",
                    action="store_true",
                    help="Be more verbose.")
-    g.add_argument("--config", "-c",
-                   dest="config_paths",
-                   action="append",
-                   help="Config path to read.")
+    g.add_argument("--output-file", "-o",
+                   help="Write output")
 
     #
     g = parser.add_argument_group('ARGS')
@@ -71,13 +92,26 @@ EXAMPLES:
 
     #
     keyword_set = set()
-    keyword_re = re.compile("\\bo(?P<keyword>[A-Z][A-Za-z0-9]*)")
+
+    #
     for arg in args.args:
         for line in open(arg).readlines():
-            for m in re.finditer(keyword_re, line):
-                keyword_set.add(m.group("keyword"))
+            for m in KEYWORD_RE.finditer(line):
+                #
+                if DEBUG:
+                    print("   {!r} = {!r}".format(m.group("name"), m.group("opcode")))
+                # skip old options
+                if m.group("opcode") in OPCODES_IGNORE:
+                    continue
+                #
+                keyword_set.add(m.group("name"))
+
     #
-    print("\n".join(sorted(keyword_set)))
+    if args.output_file:
+        with open(args.output_file, "w") as fh:
+            fh.write("\n".join(sorted(keyword_set)) + "\n")
+    else:
+        print("\n".join(sorted(keyword_set)))
 
 
 #
