@@ -1,0 +1,86 @@
+#
+# ssh-config-mode-el/.github/workflows/30-update-ssh-keywords.yml ---
+#
+
+name: 30-update-ssh-keywords
+on:
+  # once a month.
+  schedule:
+    # mm hh dom mon dow (no H, like jenkins)
+    - cron:  '0 0 1 * *'
+  #
+  workflow_dispatch:
+
+defaults:
+  run:
+    shell: bash
+
+jobs:
+
+  update-ssh-keywords:
+    runs-on: ubuntu-latest
+
+    steps:
+
+      - name: Git checkout
+        uses: actions/checkout@v2
+
+      # The cache unpacking runs as the user, allow us to write.
+      - name: Chmod /var/cache/apt/archives
+        run: |
+          sudo chmod a+w /var/cache/apt/archives/.
+
+      - name: Cache apt pkgs
+        id: cache-apt-pkgs
+        uses: actions/cache@v2
+        with:
+          key: cache-apt-pkgs
+          # -${{ github.sha }}
+          restore-keys: |
+            cache-apt-pkgs
+          path: |
+            /var/cache/apt/archives/*.deb
+
+      - name: apt-get install
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y \
+            ca-certificates \
+            git \
+            make
+
+      - name: Cache openssh-portable
+        id: cache-openssh-portable
+        uses: actions/cache@v2
+        with:
+          key: cache-openssh-portable
+          restore-keys: |
+            cache-openssh-portable
+          path: |
+            ${{github.workspace}}/get-keywords/openssh-portable
+
+      - name: Checkout openssh
+        id: openssh
+        run: |
+          cd ${GITHUB_WORKSPACE}/get-keywords
+          make _update_openssh
+          cd ${GITHUB_WORKSPACE}/get-keywords/openssh-portable
+          echo "::set-output name=tag::$(git describe --tags)"
+
+      - name: Update keywords
+        run: |
+          cd ${GITHUB_WORKSPACE}/get-keywords
+          make _update_keywords
+
+      - name: Create PR
+        uses: peter-evans/create-pull-request@v3
+        with:
+          commit-message: Update ssh keywords to ${{steps.openssh.outputs.tag}}
+          committer: 30-update-ssh-keywords <noreply@noreply>
+          author: ${{github.actor}} <${{github.actor}}@noreply>
+          branch: 30-update-ssh-keywords
+          delete-branch: true
+          body: |
+            Update ssh keywords to ${{steps.openssh.outputs.tag}}
+          assignees: jhgorrell
+          reviewers: jhgorrell

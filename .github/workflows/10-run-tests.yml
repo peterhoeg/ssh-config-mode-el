@@ -3,7 +3,7 @@
 #
 # Runs our (very simple) tests.
 
-name: 01-run-tests
+name: 10-run-tests
 on:
   - push
 
@@ -34,7 +34,6 @@ jobs:
         uses: actions/cache@v2
         with:
           key: cache-apt-pkgs
-          # -${{ github.sha }}
           restore-keys: |
             cache-apt-pkgs
           path: |
