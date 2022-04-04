@@ -99,6 +99,7 @@ tisauthentication
 tunnel
 tunneldevice
 updatehostkeys
+usekeychain
 user
 userknownhostsfile
 verifyhostkeydns

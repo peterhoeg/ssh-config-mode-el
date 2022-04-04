@@ -91,7 +91,7 @@ EXAMPLES:
         VERBOSE = args.verbose
 
     #
-    keyword_set = set()
+    keyword_set = set(['usekeychain'])
 
     #
     for arg in args.args:
