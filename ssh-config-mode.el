@@ -53,9 +53,9 @@
 
 (eval-and-compile
   (defun ssh-config-ssh-config-keywords-path ()
-    "Find the path to 'ssh-config-keywords.txt'.
-It should be next to 'ssh-config-mode.el'.
-When testing add '.' to load-path so you find the local copy."
+    "Find the path to `ssh-config-keywords.txt'.
+It should be next to `ssh-config-mode.el'.
+When testing add `.' to load-path so you find the local copy."
     (let ((path (locate-library "ssh-config-keywords.txt" nil)))
       ;;(message "ssh-config-keywords.txt is %s" path)
       path)))
