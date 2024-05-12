@@ -2,7 +2,7 @@
 # ssh-config-mode-el/Makefile ---
 #
 
-SHELL:=/bin/bash
+SHELL:=bash
 .SUFFIXES:
 
 _default: _byte_compile
