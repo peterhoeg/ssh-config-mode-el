@@ -301,6 +301,17 @@ We permit underscores.")
    ssh-known-hosts-regex-hostname
    "\\)"))
 
+(defvar ssh-known-hosts-regex-hostname-pattern
+  (concat
+   "\\(?:"
+   ssh-known-hosts-regex-hostname
+   "\\|"
+   ssh-known-hosts-regex-ip
+   "\\|"
+   ;; [host-or-ip]:222
+   "\\(?:\\[" ssh-known-hosts-regex-host "\\]:" ssh-known-hosts-regex-port "\\)"
+   "\\)"))
+
 ;; NOTE: font-lock-studio might be of help when making changes.
 (defvar ssh-known-hosts-font-lock-keywords
   ;; We want to match lines like the following:
@@ -320,27 +331,11 @@ We permit underscores.")
        ssh-known-hosts-regex-hashed
        "\\|"
 
-       ;; hostname-only
-       ssh-known-hosts-regex-hostname
-       "\\|"
-
-       ;; ip-only
-       ssh-known-hosts-regex-ip
-       "\\|"
-
-       ;; hostname "," ip
-       "\\(?:" ssh-known-hosts-regex-hostname "," ssh-known-hosts-regex-ip "\\)"
-       "\\|"
-
-       ;; [host-or-ip]:222
-       "\\(?:\\[" ssh-known-hosts-regex-host "\\]:" ssh-known-hosts-regex-port "\\)"
-       "\\|"
-
-       ;; We arent matching ports, but they should be the same.
-       ;; [ssh.github.com]:443,[192.1.2.3]:443
-       "\\(?:"
-       "\\[" ssh-known-hosts-regex-hostname "\\]:" ssh-known-hosts-regex-port ","
-       "\\[" ssh-known-hosts-regex-ip       "\\]:" ssh-known-hosts-regex-port "\\)"
+       ;; list of comma separated hostname patterns
+       ssh-known-hosts-regex-hostname-pattern
+       "\\(?:,"
+       ssh-known-hosts-regex-hostname-pattern
+       "\\)*"
 
        "\\)"
        "[ \t]+"
