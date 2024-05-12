@@ -387,7 +387,7 @@ So we dont just match .* for the hostname.")
        ;; ignore options
        ;; double quoted string will be fontified by generic mode.
        ;; key type
-       "\\(\\(?:ecdsa\\|ssh\\)-[^[:space:]]+\\)\\s-+"
+       "\\(\\(?:ecdsa\\|sk\\|ssh\\)-[^[:space:]]+\\)\\s-+"
        ;; base64
        "\\([0-9A-Za-z+/]+=*\\)"
        ;; comment in public key
