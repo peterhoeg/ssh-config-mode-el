@@ -9,9 +9,10 @@
 ;; Author:    Harley Gorrell <harley@panix.com>
 ;; URL:       https://github.com/jhgorrell/ssh-config-mode-el
 ;; Github:    https://raw.github.com/jhgorrell/ssh-config-mode-el/master/ssh-config-mode.el
-;; Keywords:  ssh, config, emacs
-;; Version:   $Revision: 1.14 $
+;; Keywords:  comm, files
+;; Version:   1.14
 ;; Tag:       20170413T0010
+;; Package-Requires: ((emacs "24.3"))
 
 ;;; Commentary:
 ;; * Fontifys the ssh config keywords.
@@ -58,9 +59,8 @@ It should be next to `ssh-config-mode.el'.
 When testing add `.' to load-path so you find the local copy."
     (let ((path (locate-library "ssh-config-keywords.txt" nil)))
       ;;(message "ssh-config-keywords.txt is %s" path)
-      path)))
+      path))
 
-(eval-and-compile
   (defun ssh-config-read-keywords (&optional file-path)
     "Read the list of ssh keywords, returning them as a list."
     ;; (message "ssh-config-read-keywords")
@@ -69,22 +69,20 @@ When testing add `.' to load-path so you find the local copy."
                (ssh-config-ssh-config-keywords-path))))
       (with-temp-buffer
         (insert-file-contents file-path)
-        (split-string (buffer-string) "\n" t)))))
+        (split-string (buffer-string) "\n" t))))
 
-(eval-and-compile
   (defvar ssh-config-keywords
     (eval-when-compile
       (ssh-config-read-keywords)))
-  "A list of keywords allowed in a user ssh config file.")
+  "A list of keywords allowed in a user ssh config file."
 
-(eval-and-compile
   (defvar ssh-config-font-lock-keywords
     (eval-when-compile
       `((
          ,(regexp-opt ssh-config-keywords 'words)
-         (1 font-lock-keyword-face)
-         )))
+         (1 font-lock-keyword-face))))
     "Expressions to hilight in `ssh-config-mode'."))
+
 ;; ssh-config-font-lock-keywords
 
 ;; Setup
@@ -141,9 +139,9 @@ Comments right above a 'Host' are considered to be about that Host."
     (cond
      ;; Start of file and "Host" and "Match" should be at 0
      ((or (looking-at ssh-config-host-regexp)
-	  (looking-at ssh-config-match-regexp)
+          (looking-at ssh-config-match-regexp)
           (and (not (ssh-config-in-host-block-p))
-	       (not (ssh-config-in-match-block-p))))
+               (not (ssh-config-in-match-block-p))))
       0)
      ;; Comment line
      ((looking-at "\\s-*#")
@@ -151,7 +149,7 @@ Comments right above a 'Host' are considered to be about that Host."
       (while (looking-at "\\s-*#")
         (forward-line))
       (if (or (looking-at ssh-config-host-regexp)
-	      (looking-at ssh-config-match-regexp))
+              (looking-at ssh-config-match-regexp))
           0
         ssh-config-mode-indent))
      ;; default.
@@ -347,13 +345,11 @@ We permit underscores.")
 
        ;; public key:
        ;; base64data==
-       "\\(AA[0-9A-Za-z/+]+=*\\)"
-       )
+       "\\(AA[0-9A-Za-z/+]+=*\\)")
      (1 font-lock-warning-face)
      (2 font-lock-function-name-face)
      (3 font-lock-keyword-face)
-     (4 font-lock-string-face)
-     ))
+     (4 font-lock-string-face)))
   "Expressions to hilight in `ssh-known-hosts-mode'.
 We want to try and be a good match, so misformatted ones stand out.
 So we dont just match .* for the hostname.")
@@ -399,8 +395,7 @@ So we dont just match .* for the hostname.")
        "$")
       '(1 font-lock-keyword-face)
       '(2 font-lock-string-face)
-      '(3 font-lock-comment-face nil t)
-      )))
+      '(3 font-lock-comment-face nil t))))
   ;; Not define `auto-mode-alist' obey the other mode in this elisp.
   nil
   nil)
