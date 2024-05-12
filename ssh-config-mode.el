@@ -152,7 +152,7 @@ Comments right above a 'Host' are considered to be about that Host."
         (forward-line))
       (if (or (looking-at ssh-config-host-regexp)
 	      (looking-at ssh-config-match-regexp))
-        0
+          0
         ssh-config-mode-indent))
      ;; default.
      (t
@@ -230,7 +230,7 @@ Only show the first hostname in the menu.")
   (add-to-list 'auto-mode-alist '("/\\.ssh/config\\(\\.d/.*\\.conf\\)?\\'" . ssh-config-mode))
   (add-to-list 'auto-mode-alist '("/sshd?_config\\(\\.d/.*\\.conf\\)?\\'" . ssh-config-mode))
   (add-to-list 'auto-mode-alist '("/known_hosts\\'" . ssh-known-hosts-mode))
-  (add-to-list 'auto-mode-alist '("/authorized_keys\\'" . ssh-authorized-keys-mode)))
+  (add-to-list 'auto-mode-alist '("/authorized_keys2?\\(\\.d\\)?.*\\'" . ssh-authorized-keys-mode)))
 
 ;;;;;
 
