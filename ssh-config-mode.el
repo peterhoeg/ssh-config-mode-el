@@ -52,6 +52,8 @@
 ;; We use eval-and-compile so we can use them at compile
 ;; time and call regexp-opt during compliation.
 
+(require 'rx)
+
 (eval-and-compile
   (defun ssh-config-ssh-config-keywords-path ()
     "Find the path to `ssh-config-keywords.txt'.
@@ -167,13 +169,13 @@ Comments right above a 'Host' are considered to be about that Host."
 (defvar ssh-config-mode-map
   (let ((map (make-sparse-keymap)))
     ;; Ctrl bindings
-    (define-key map [C-down]    'ssh-config-host-next)
-    (define-key map [C-up]      'ssh-config-host-prev)
+    (define-key map [C-down]    #'ssh-config-host-next)
+    (define-key map [C-up]      #'ssh-config-host-prev)
     ;;
-    (define-key map "\C-c}"     'ssh-config-host-next)
-    (define-key map "\C-c{"     'ssh-config-host-prev)
+    (define-key map "\C-c}"     #'ssh-config-host-next)
+    (define-key map "\C-c{"     #'ssh-config-host-prev)
     ;;
-    (define-key map (kbd "TAB") 'indent-for-tab-command)
+    (define-key map (kbd "TAB") #'indent-for-tab-command)
     map)
   "The local keymap for `ssh-config-mode'.")
 
@@ -219,16 +221,16 @@ Only show the first hostname in the menu.")
    ;; cause our keywords are all lower case.
    font-lock-keywords-case-fold-search t)
   ;;
-  (setq-local indent-line-function 'ssh-config-indent-line)
-  (setq-local imenu-generic-expression ssh-config-imenu-generic-expression)
-  (add-hook 'completion-at-point-functions 'ssh-config-completion-at-point nil 'local))
+  (setq-local indent-line-function 'ssh-config-indent-line
+              imenu-generic-expression ssh-config-imenu-generic-expression)
+  (add-hook 'completion-at-point-functions #'ssh-config-completion-at-point nil 'local))
 
 ;;;###autoload
 (progn
-  (add-to-list 'auto-mode-alist '("/\\.ssh/config\\(\\.d/.*\\.conf\\)?\\'" . ssh-config-mode))
-  (add-to-list 'auto-mode-alist '("/sshd?_config\\(\\.d/.*\\.conf\\)?\\'" . ssh-config-mode))
-  (add-to-list 'auto-mode-alist '("/known_hosts\\'" . ssh-known-hosts-mode))
-  (add-to-list 'auto-mode-alist '("/authorized_keys2?\\(\\.d\\)?.*\\'" . ssh-authorized-keys-mode)))
+  (add-to-list 'auto-mode-alist `(,(rx "/.ssh/config" (* ".d/" (* alnum) ".conf") eos). ssh-config-mode))
+  (add-to-list 'auto-mode-alist `(,(rx "/ssh" (* "d") "_config" (* ".d/" (* alnum) ".conf") eos) . ssh-config-mode))
+  (add-to-list 'auto-mode-alist `(,(rx "/known_hosts" eos) . ssh-known-hosts-mode))
+  (add-to-list 'auto-mode-alist `(,(rx "/authorized_keys" (* "2" ".d/" alnum) eos) . ssh-authorized-keys-mode)))
 
 ;;;;;
 
@@ -247,7 +249,7 @@ Only show the first hostname in the menu.")
     (modify-syntax-entry ?\n ">" table)
     table)
   "Syntax table for `ssh-known-hosts-mode'.
-Just sets the comment syntax.")
+  Just sets the comment syntax.")
 
 ;;;;;
 
@@ -282,7 +284,7 @@ Just sets the comment syntax.")
 (defvar ssh-known-hosts-regex-hostname
   "\\(?:\\(?:[a-zA-Z0-9_][-a-zA-Z0-9_]*[.]\\)*[a-zA-Z_][-a-zA-Z0-9_]*\\)"
   "Regex for matching hostnames.
-We permit underscores.")
+  We permit underscores.")
 
 ;; :2222
 (defvar ssh-known-hosts-regex-port
@@ -351,13 +353,13 @@ We permit underscores.")
      (3 font-lock-keyword-face)
      (4 font-lock-string-face)))
   "Expressions to hilight in `ssh-known-hosts-mode'.
-We want to try and be a good match, so misformatted ones stand out.
-So we dont just match .* for the hostname.")
+  We want to try and be a good match, so misformatted ones stand out.
+  So we dont just match .* for the hostname.")
 
 ;;;###autoload
 (defun ssh-known-hosts-mode ()
   "Major mode for fontifiying ssh known_hosts files.
-\\{ssh-known-hosts-mode}"
+  \\{ssh-known-hosts-mode}"
   (interactive)
   (kill-all-local-variables)
   (set-syntax-table ssh-known-hosts-mode-syntax-table)
