@@ -227,8 +227,8 @@ Only show the first hostname in the menu.")
 
 ;;;###autoload
 (progn
-  (add-to-list 'auto-mode-alist `(,(rx "/.ssh/config" (* ".d/" (* alnum) ".conf") eos). ssh-config-mode))
-  (add-to-list 'auto-mode-alist `(,(rx "/ssh" (* "d") "_config" (* ".d/" (* alnum) ".conf") eos) . ssh-config-mode))
+  (add-to-list 'auto-mode-alist `(,(rx "/.ssh/config" (* ".d/" (+ alnum) ".conf") eos) . ssh-config-mode))
+  (add-to-list 'auto-mode-alist `(,(rx "/ssh" (* "d") "_config" (* ".d/" (+ alnum) ".conf") eos) . ssh-config-mode))
   (add-to-list 'auto-mode-alist `(,(rx "/known_hosts" eos) . ssh-known-hosts-mode))
   (add-to-list 'auto-mode-alist `(,(rx "/authorized_keys" (* "2" ".d/" alnum) eos) . ssh-authorized-keys-mode)))
 
