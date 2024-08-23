@@ -1,0 +1,56 @@
+#+options: author:nil date:nil timestamp:nil
+#+title: ssh-config support for Emacs
+#+export: org-org-export-to-org
+#+export_file_name: ../README.org
+* ssh-config-mode-el/README
+[[https://melpa.org/#/ssh-config-mode][[[https://melpa.org/#/ssh-config-mode][file:https://melpa.org/packages/ssh-config-mode-badge.svg]]]]
+[[https://github.com/jhgorrell/ssh-config-mode-el/actions/workflows/10-run-tests.yml][[[https://github.com/peterhoeg/ssh-config-mode-el/actions][file:https://github.com/peterhoeg/ssh-config-mode-el/actions/workflows/10-run-tests.yml/badge.svg]]]]
+
+A mode to edit SSH config files.
+
+It does the following:
+
+- Fontifys the SSH config keywords.
+- Keys for skipping from host section to host section.
+- Indentation of configuration found in the following locations:
+
+#+begin_example
+.ssh/config
+sshd?_config
+known_hosts
+authorized_keys2?
+#+end_example
+
+If you have a SSH config file that you'd like to use this mode on
+automatically, add this line as the first one in the file:
+
+#+begin_src elisp
+# -*- mode: ssh-config -*-
+#+end_src
+
+Or add somthing like this to your init file:
+
+#+begin_src elisp
+(add-to-list 'auto-mode-alist '("/path-to-your-ssh/config\\'" . ssh-config-mode))
+#+end_src
+** Links
+- [[https://github.com/peterhoeg/ssh-config-mode-el]]
+- [[https://github.com/openssh/openssh-portable]]
+** License
+=ssh-config-mode-el= is distributed under the [[https://www.gnu.org/licenses/gpl-3.0.txt][GPL-3.0]] (or any later version.)
+** Contributors
+- Eder Elorriaga
+- Harley Gorrell
+- Heinz Deinhart
+- iory
+- John Mastro
+- Masahiro Hayashi
+- Matthew Weaver
+- Peter Hoeg
+- Peter Oliver
+- Sharif Nassar
+- Ted Carnahan
+- USAMI Kenta
+- Ville Skyttä
+- Wieland Hoffmann
+- Александар Симић

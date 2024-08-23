@@ -49,11 +49,10 @@ _jenkinsfile_sh:
 ###
 
 # Will need to edit this
-_contributors:
+doc/contributors.txt: *.el *.org
 	@git log --format='- %an' HEAD^@ | \
-	  sort | \
-	  grep -v -e 'harley gorrell' -e 'jenkins-bot' -e 'jhgorrell' | \
-	  uniq
+	  sort -u | \
+	  grep -v -e 'harley gorrell' -e 'jenkins-bot' -e 'jhgorrell' > $@
 
 ###
 
