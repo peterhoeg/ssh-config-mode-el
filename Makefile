@@ -43,9 +43,6 @@ _checkdoc_batch: | checkdoc-batch.el
 _update_keywords:
 	cd get-keywords && make _update_keywords
 
-_jenkinsfile_sh:
-	./Jenkinsfile.sh
-
 ###
 
 # Will need to edit this
@@ -58,7 +55,7 @@ _contributors:
 ###
 
 _clean:
-	-rm *.elc junit.xml junit.xml.tmp
+	-rm *.elc
 
 _dist_clean: _clean
 	-rm checkdoc-batch.el
@@ -111,26 +108,3 @@ _emacs_version:
 
 _printenv:
 	printenv | sort
-
-junit=@echo -e ${1} >> junit.xml.tmp
-
-# Fake a successful run.
-_circleci_junit_ok: _checkdoc_batch
-	@echo -n "" > junit.xml.tmp
-	@$(call junit,"<?xml version='1.0' encoding='utf-8'?>")
-	@$(call junit,"<testsuite tests='1'>\n<testcase classname='checkdoc' name='checkdoc'>")
-	@$(call junit,"<system-out>")
-	@cat checkdoc.stdout >> junit.xml.tmp
-	@$(call junit,-e "</system-out>\n<system-err>")
-	@cat checkdoc.stderr >> junit.xml.tmp
-	@$(call junit,"</system-err>\n</testcase>\n</testsuite>")
-	mv junit.xml.tmp junit.xml
-
-_circleci_run+=_clean
-_circleci_run+=_printenv
-_circleci_run+=_emacs_version
-_circleci_run+=_byte_compile
-_circleci_run+=_test_pkg_install
-_circleci_run+=_circleci_junit_ok
-
-_circleci_run: ${_circleci_run}
