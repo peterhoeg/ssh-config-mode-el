@@ -1,17 +1,12 @@
 ;;; ssh-config-mode.el --- Mode for fontification of ~/.ssh/config
-;;
-;; ssh-config-mode-el/ssh-config-mode.el ---
-;;
-;; $Id: ssh-config-mode.el,v 1.14 2012/05/14 05:29:26 harley Exp $
-;;
 
 ;; SPDX-License-Identifier: GPL v3+ (https://www.gnu.org/licenses/gpl-3.0.txt)
 ;; Author:    Harley Gorrell <harley@panix.com>
-;; URL:       https://github.com/jhgorrell/ssh-config-mode-el
-;; Github:    https://raw.github.com/jhgorrell/ssh-config-mode-el/master/ssh-config-mode.el
+;; Maintainer: Peter Hoeg <peter@hoeg.com>
+;; URL:       https://github.com/peterhoeg/ssh-config-mode-el
+;; Github:    https://raw.github.com/peterhoeg/ssh-config-mode-el/master/ssh-config-mode.el
 ;; Keywords:  comm, files
 ;; Version:   1.14
-;; Tag:       20170413T0010
 ;; Package-Requires: ((emacs "24.3"))
 
 ;;; Commentary:

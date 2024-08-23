@@ -4,8 +4,8 @@ ssh-config-mode-el/README
 .. image:: https://melpa.org/packages/ssh-config-mode-badge.svg
    :target: https://melpa.org/#/ssh-config-mode
 
-.. image:: https://github.com/jhgorrell/ssh-config-mode-el/actions/workflows/10-run-tests.yml/badge.svg
-   :target: https://github.com/jhgorrell/ssh-config-mode-el/actions/workflows/10-run-tests.yml
+.. image:: https://github.com/peterhoeg/ssh-config-mode-el/actions/workflows/10-run-tests.yml/badge.svg
+   :target: https://github.com/peterhoeg/ssh-config-mode-el/actions/workflows/10-run-tests.yml
 
 A mode to edit SSH config files.
 
@@ -38,7 +38,7 @@ Or add somthing like this to your init file:
 Links
 ----------------------------------------
 
-- https://github.com/jhgorrell/ssh-config-mode-el
+- https://github.com/peterhoeg/ssh-config-mode-el
 - https://github.com/openssh/openssh-portable
 
 
