@@ -11,7 +11,6 @@ canonicalizepermittedcnames
 casignaturealgorithms
 certificatefile
 challengeresponseauthentication
-channeltimeout
 checkhostip
 ciphers
 clearallforwardings
@@ -23,7 +22,6 @@ controlpath
 controlpersist
 dsaauthentication
 dynamicforward
-enableescapecommandline
 enablesshkeysign
 escapechar
 exitonforwardfailure
@@ -65,7 +63,6 @@ macs
 match
 nohostauthenticationforlocalhost
 numberofpasswordprompts
-obscurekeystroketiming
 passwordauthentication
 permitlocalcommand
 permitremoteopen
@@ -83,7 +80,6 @@ rekeylimit
 remotecommand
 remoteforward
 requesttty
-requiredrsasize
 revokedhostkeys
 securitykeyprovider
 sendenv
@@ -98,7 +94,6 @@ streamlocalbindmask
 streamlocalbindunlink
 stricthostkeychecking
 syslogfacility
-tag
 tcpkeepalive
 tisauthentication
 tunnel
