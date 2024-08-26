@@ -1,6 +1,6 @@
 ;;; ssh-config-mode.el --- Mode for fontification of ~/.ssh/config
 
-;; SPDX-License-Identifier: GPL v3+ (https://www.gnu.org/licenses/gpl-3.0.txt)
+;; SPDX-License-Identifier: GPL-3.0-or-later
 ;; Author:    Harley Gorrell <harley@panix.com>
 ;; Maintainer: Peter Hoeg <peter@hoeg.com>
 ;; URL:       https://github.com/peterhoeg/ssh-config-mode-el
