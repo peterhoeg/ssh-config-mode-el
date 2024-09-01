@@ -2,6 +2,7 @@
 - Harley Gorrell
 - Heinz Deinhart
 - iory
+- Jimmy Yuen Ho Wong
 - John Mastro
 - Masahiro Hayashi
 - Matthew Weaver
