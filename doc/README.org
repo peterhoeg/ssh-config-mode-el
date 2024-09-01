@@ -1,14 +1,15 @@
 #+TITLE: ssh-config support for Emacs
 #+OPTIONS: author:nil date:nil timestamp:nil
 #+EXPORT: org-org-export-to-org
-#+EXPORT_FILE_NAME: ../README.org
+#+EXPORT_FILE_NAME: ../README
+#+auto_export: org
 
 * ssh-config-mode-el/README
 :PROPERTIES:
 :CUSTOM_ID: ssh-config-mode-elreadme
 :END:
-[[https://melpa.org/#/ssh-config-mode][[[https://melpa.org/#/ssh-config-mode][file:https://melpa.org/packages/ssh-config-mode-badge.svg]]]]
-[[https://github.com/jhgorrell/ssh-config-mode-el/actions/workflows/10-run-tests.yml][[[https://github.com/peterhoeg/ssh-config-mode-el/actions][file:https://github.com/peterhoeg/ssh-config-mode-el/actions/workflows/10-run-tests.yml/badge.svg]]]]
+{{{badge_melpa(ssh-config-mode)}}}
+{{{badge_gh_action(ssh-config-mode-el,10-run-tests)}}}
 
 A mode to edit SSH config files.
 
@@ -59,3 +60,7 @@ Or add somthing like this to your init file:
 :END:
 
 #+INCLUDE: contributors.txt
+
+* org-mode :noexport:
+#+macro: badge_melpa [[https://melpa.org/#/$1][file:https://melpa.org/packages/$1-badge.svg]]
+#+macro: badge_gh_action [[https://github.com/peterhoeg/$1/actions/workflows/$2.yml][file:https://github.com/peterhoeg/$1/actions/workflows/$2.yml/badge.svg]]
