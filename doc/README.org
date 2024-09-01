@@ -1,4 +1,3 @@
-#+TITLE: ssh-config support for Emacs
 #+OPTIONS: author:nil date:nil timestamp:nil
 #+EXPORT: org-org-export-to-org
 #+EXPORT_FILE_NAME: ../README
