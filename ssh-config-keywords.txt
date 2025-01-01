@@ -108,5 +108,6 @@ usekeychain
 user
 userknownhostsfile
 verifyhostkeydns
+versionaddendum
 visualhostkey
 xauthlocation
