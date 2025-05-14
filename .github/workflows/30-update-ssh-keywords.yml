@@ -82,5 +82,5 @@ jobs:
           delete-branch: true
           body: |
             Update ssh keywords to ${{steps.openssh.outputs.tag}}
-          assignees: jhgorrell
-          reviewers: jhgorrell
+          assignees: peterhoeg
+          reviewers: peterhoeg
