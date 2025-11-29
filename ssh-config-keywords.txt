@@ -79,6 +79,7 @@ proxyusefdpass
 pubkeyacceptedalgorithms
 pubkeyacceptedkeytypes
 pubkeyauthentication
+refuseconnection
 rekeylimit
 remotecommand
 remoteforward
@@ -110,4 +111,5 @@ userknownhostsfile
 verifyhostkeydns
 versionaddendum
 visualhostkey
+warnweakcrypto
 xauthlocation
