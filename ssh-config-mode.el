@@ -368,7 +368,7 @@ Only show the first hostname in the menu.")
   (make-local-variable 'font-lock-defaults)
   (setq font-lock-defaults '(ssh-known-hosts-font-lock-keywords))
   ;;
-  (run-hooks 'ssh-known-hosts-mode-hook)
+  (run-mode-hooks 'ssh-known-hosts-mode-hook)
   nil)
 
 ;;;;;
