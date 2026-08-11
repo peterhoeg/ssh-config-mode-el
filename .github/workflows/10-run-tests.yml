@@ -1,44 +1,35 @@
+---
 #
 # ssh-config-mode-el/.github/workflows/10-run-tests.yml ---
 #
 # Runs our (very simple) tests.
-
 name: 10-run-tests
-on:
-  - push
-
+on: [push]
 defaults:
   run:
     shell: bash
-
 env:
   DEBIAN_FRONTEND: noninteractive
-
 jobs:
-
   run-tests:
     runs-on: ubuntu-latest
-
     steps:
-
       - name: Git checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v5
 
       # The cache unpacking runs as the user, allow us to write.
       - name: Chmod /var/cache/apt/archives
         run: |
           sudo chmod a+w /var/cache/apt/archives/.
-
       - name: Cache apt pkgs
         id: cache-apt-pkgs
-        uses: actions/cache@v2
+        uses: &cache actions/cache@v5
         with:
           key: cache-apt-pkgs
           restore-keys: |
             cache-apt-pkgs
           path: |
             /var/cache/apt/archives/*.deb
-
       - name: apt-get install
         run: |
           sudo apt-get update
@@ -50,40 +41,36 @@ jobs:
             make \
             ssh \
             wget
-
       - name: Cache checkdoc
         id: cache-checkdoc-batch
-        uses: actions/cache@v2
+        uses: *cache
         with:
           key: cache-checkdoc-batch
           path: |
             ./checkdoc-batch.el
-
       - name: Fetch checkdoc-batch.el
         if: steps.cache-checkdoc-batch.outputs.cache-hit != 'true'
         run: |
           make checkdoc-batch.el
-
       - name: Run tests
         run: |
-          cd ${GITHUB_WORKSPACE}
+          cd "${GITHUB_WORKSPACE}"
           make _circleci_run
-
       - name: Date
         id: date
         run: |
-          echo "::set-output name=date::$(date +%Y%m%dT%H%M)"
+          echo "name=$(date +%Y%m%dT%H%M)" >> "$GITHUB_OUTPUT"
 
       # Currently we have to download the zip to see them.
       # This might change in the future.
       # https://github.com/actions/upload-artifact/issues/14
       - name: Artifacts
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v4
         if: ${{ always() }}
         with:
           name: ssh-config-mode-el-artifacts-${{ github.run_number }}-${{steps.date.outputs.date}}
           if-no-files-found: error
-          path: |
+          path: |-
             checkdoc.stderr
             checkdoc.stdout
             junit.xml
