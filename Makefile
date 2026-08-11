@@ -2,7 +2,7 @@
 # ssh-config-mode-el/Makefile ---
 #
 
-SHELL:=bash
+SHELL := bash
 .SUFFIXES:
 
 _default: _byte_compile
@@ -17,7 +17,7 @@ _brew_install:
 
 #####
 
-EL:=ssh-config-mode.el
+EL := ssh-config-mode.el
 
 _byte_compile:
 	-rm *.elc
@@ -28,7 +28,7 @@ _byte_compile:
 	  ${EL}
 
 checkdoc-batch.el:
-	wget -O ${@}.tmp http://download.tuxfamily.org/user42/${@}
+	wget -O ${@}.tmp https://download.tuxfamily.org/user42/${@}
 	mv ${@}.tmp ${@}
 
 _checkdoc_batch: | checkdoc-batch.el
@@ -36,7 +36,7 @@ _checkdoc_batch: | checkdoc-batch.el
 	  --load ${PWD}/checkdoc-batch.el \
 	  --funcall checkdoc-batch-commandline \
 	  ${EL} 1> checkdoc.stdout 2> checkdoc.stderr ; \
-	cat checkdoc.stdout checkdoc.stderr
+	  cat checkdoc.stdout checkdoc.stderr
 
 ###
 
@@ -80,7 +80,7 @@ _update_tag:
 
 ###
 
-python_files+=./get-keywords/get-keywords
+python_files += ./get-keywords/get-keywords
 
 _isort:
 	isort \
@@ -96,11 +96,11 @@ _autopep8:
 	  --max-line-length 120 \
 	  ${python_files}
 
-_precommit+=_isort
-_precommit+=_autopep8
-_precommit+=_byte_compile
-_precommit+=_test_pkg_install
-_precommit+=_checkdoc_batch
+_precommit += _isort
+_precommit += _autopep8
+_precommit += _byte_compile
+_precommit += _test_pkg_install
+_precommit += _checkdoc_batch
 
 _precommit: ${_precommit}
 
@@ -112,7 +112,7 @@ _emacs_version:
 _printenv:
 	printenv | sort
 
-junit=@echo -e ${1} >> junit.xml.tmp
+junit = @echo -e ${1} >> junit.xml.tmp
 
 # Fake a successful run.
 _circleci_junit_ok: _checkdoc_batch
@@ -126,11 +126,11 @@ _circleci_junit_ok: _checkdoc_batch
 	@$(call junit,"</system-err>\n</testcase>\n</testsuite>")
 	mv junit.xml.tmp junit.xml
 
-_circleci_run+=_clean
-_circleci_run+=_printenv
-_circleci_run+=_emacs_version
-_circleci_run+=_byte_compile
-_circleci_run+=_test_pkg_install
-_circleci_run+=_circleci_junit_ok
+_circleci_run += _clean
+_circleci_run += _printenv
+_circleci_run += _emacs_version
+_circleci_run += _byte_compile
+_circleci_run += _test_pkg_install
+_circleci_run += _circleci_junit_ok
 
 _circleci_run: ${_circleci_run}
