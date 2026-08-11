@@ -1,38 +1,32 @@
+---
 #
 # ssh-config-mode-el/.github/workflows/30-update-ssh-keywords.yml ---
 #
-
 name: 30-update-ssh-keywords
 on:
   # once a month.
   schedule:
     # mm hh dom mon dow (no H, like jenkins)
-    - cron:  '0 0 1 * *'
+    - cron: 0 0 1 * *
   #
   workflow_dispatch:
-
 defaults:
   run:
     shell: bash
-
 jobs:
-
   update-ssh-keywords:
     runs-on: ubuntu-latest
-
     steps:
-
       - name: Git checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
 
       # The cache unpacking runs as the user, allow us to write.
       - name: Chmod /var/cache/apt/archives
         run: |
           sudo chmod a+w /var/cache/apt/archives/.
-
       - name: Cache apt pkgs
         id: cache-apt-pkgs
-        uses: actions/cache@v2
+        uses: &cache actions/cache@v4
         with:
           key: cache-apt-pkgs
           # -${{ github.sha }}
@@ -40,7 +34,6 @@ jobs:
             cache-apt-pkgs
           path: |
             /var/cache/apt/archives/*.deb
-
       - name: apt-get install
         run: |
           sudo apt-get update
@@ -48,32 +41,28 @@ jobs:
             ca-certificates \
             git \
             make
-
       - name: Cache openssh-portable
         id: cache-openssh-portable
-        uses: actions/cache@v2
+        uses: *cache
         with:
           key: cache-openssh-portable
           restore-keys: |
             cache-openssh-portable
           path: |
             ${{github.workspace}}/get-keywords/openssh-portable
-
       - name: Checkout openssh
         id: openssh
         run: |
-          cd ${GITHUB_WORKSPACE}/get-keywords
+          cd "${GITHUB_WORKSPACE}"/get-keywords
           make _update_openssh
-          cd ${GITHUB_WORKSPACE}/get-keywords/openssh-portable
-          echo "::set-output name=tag::$(git describe --tags)"
-
+          cd "${GITHUB_WORKSPACE}"/get-keywords/openssh-portable
+          echo "tag=$(git describe --tags)" >> "$GITHUB_OUTPUT"
       - name: Update keywords
         run: |
-          cd ${GITHUB_WORKSPACE}/get-keywords
+          cd "${GITHUB_WORKSPACE}"/get-keywords
           make _update_keywords
-
       - name: Create PR
-        uses: peter-evans/create-pull-request@v3
+        uses: peter-evans/create-pull-request@v6
         with:
           commit-message: Update ssh keywords to ${{steps.openssh.outputs.tag}}
           committer: 30-update-ssh-keywords <noreply@noreply>
@@ -82,5 +71,5 @@ jobs:
           delete-branch: true
           body: |
             Update ssh keywords to ${{steps.openssh.outputs.tag}}
-          assignees: jhgorrell
-          reviewers: jhgorrell
+          assignees: peterhoeg
+          reviewers: peterhoeg
